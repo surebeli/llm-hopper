@@ -1,0 +1,20 @@
+.hopper/skill-package/SKILL.md
+  h_7f04b48fd0b771 1-42
+.hopper/prompts/start-new-project-with-roles.md
+  h_7f04b48fd0b771 1-22
+.hopper/prompts/handoff-to-role.md
+  h_7f04b48fd0b771 2-19,21,24,26
+.hopper/scripts/install-as-skill.sh
+  h_7f04b48fd0b771 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "b0891b56f9f4241826247230310950d009ea8235",
+  "prompts": {},
+  "humans": {
+    "h_7f04b48fd0b771": {
+      "author": "litianyi"
+    }
+  }
+}
