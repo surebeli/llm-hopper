@@ -2,20 +2,15 @@
 
 **prompt-only、zero-code 的多角色跨进程 AI 开发框架**
 
-让不同模型（Claude、Kimi、Gemini、DeepSeek、GLM 等）在不同终端、IDE、CLI 会话中组成**虚拟开发团队**，严格按角色（Leader / Builder / Executor / UI-Builder）协作。
+让不同模型在不同终端 / IDE / CLI 会话中组成**虚拟开发团队**，通过自动 handoff 实现无缝协作。
 
 ## 核心特性
 
-- **角色系统**：以 Nickname 为主标识。
-  - **Leader**：仅负责 gstack + GSD 阶段（战略、规划、spec）。
-  - **Builder**：全面执行 Superpowers + Review。
-  - **Executor**：纯执行，只严格遵循指令（零创意）。
-  - **UI-Builder**：专精 Web / 前端 UI（顶级设计感）。
-- **跨进程 / 多模型 / 多 session**：支持不同窗口、不同模型协同。
-- **Cost Tracking**：自动成本记录与报告。
-- **Handoff 机制**：标准化、清晰、可追溯。
-- **完全 prompt-only**：无需安装任何包或二进制。
-- **Todo App Demo**：提供完整演示。
+- 角色系统（以 Nickname 为主要标识）
+- 自动 Handoff（完成任务后自动生成下一 block，只需复制粘贴）
+- FINAL SYNC & BACKFILL（自动更新全局状态，避免断头路）
+- Cost Tracking
+- Skill 包支持（一条命令使用）
 
 ## 项目结构
 
@@ -102,14 +97,30 @@ cat .hopper/prompts/cost-report.md
 
 ## 角色一览（当前配置）
 
-| Nickname | Role | Model | 主要职责 |
-| --- | --- | --- | --- |
-| `leader-opus-47` | Leader | `claude-opus-4-7` | gstack + GSD（决策规划） |
-| `builder-kimi` | Builder | `kimi-2.6` | Superpowers + Review |
-| `mimo` | Builder | `mimo-v2.5-pro` | Superpowers + Review |
-| `ui-builder-gemini` | UI-Builder | `gemini-3.1-pro` | Web / 前端 UI（顶级设计感） |
-| `executor-glm` | Executor | `glm-5.1` | 纯执行（严格遵循指令） |
-| `executor-deepseek` | Executor | `deepseek-v4-flash` | 纯执行（严格遵循指令） |
+> **注意**：下方表格是**当前项目的角色配置**，**不是全局固定配置**。  
+> 你可以随时手动修改它（甚至为不同项目使用完全不同的角色组合）。
+
+| Nickname            | Role        | Model             | 权限说明                     |
+|---------------------|-------------|-------------------|------------------------------|
+| leader-opus-47      | Leader      | claude-opus-4-7   | gstack + GSD（决策规划）    |
+| builder-kimi        | Builder     | kimi-2.6          | Superpowers + Review        |
+| mimo                | Builder     | mimo-v2.5-pro     | Superpowers + Review        |
+| ui-builder-gemini   | UI-Builder  | gemini-3.1-pro    | Web/前端 UI（顶级设计感）  |
+| executor-glm        | Executor    | glm-5.1           | 纯执行                      |
+| executor-deepseek   | Executor    | deepseek-v4-flash | 纯执行                      |
+
+### 如何手动调整角色配置（推荐做法）
+
+1. 修改 **源头文件**（推荐）：
+   - 编辑 `.hopper/agents/AGENTS.md`（添加、删除、修改角色）
+   - 或运行 `reconfigure-roles.md` 进行交互式调整
+
+2. 更新本 README.md 中的表格（只需复制粘贴最新状态）：
+   - 运行 `role-status.md`
+   - 把输出的 Confirmation Table 复制到上面表格中即可
+
+3. 不同项目使用不同配置：
+   - 每个新项目都可以有完全独立的角色组合（只需在该项目仓库的 .hopper/ 目录下修改即可）
 
 ## Handoff 使用规范
 
@@ -153,12 +164,9 @@ strategy -> planning -> execution -> review
 
 ## 最佳实践
 
-- **Leader** 永远负责早期决策（gstack + GSD）。
-- **UI 相关任务** 优先交给 `ui-builder-gemini`。
-- **纯代码执行** 交给 Executor，避免模型乱加功能。
-- 每次重要 handoff 后记录成本。
-- 多窗口并行：一个窗口跑 Leader，另一个窗口跑 Builder / Executor。
-- 定期运行 `role-status` 查看团队状态。
+- 每个项目开始时，建议先运行 `role-status.md` 确认角色配置是否符合当前项目需求
+- 需要调整时，直接修改 `.hopper/agents/AGENTS.md` 或运行 `reconfigure-roles.md`
+- README.md 中的角色表格仅作为**文档参考**，以 `.hopper/agents/AGENTS.md` 为最终配置
 
 ## 扩展方式
 
