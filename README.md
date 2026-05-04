@@ -1,51 +1,182 @@
-# 🐰 llm-hopper
+# LLM-Hopper v0.1
 
-**穷鬼多LLM跳台协同开发神器**  
-*在 Claude、GPT、Gemini、Kimi……之间疯狂 tab 切换，却永远不用再手动 copy-paste 任务和结果*
+**prompt-only、zero-code 的多角色跨进程 AI 开发框架**
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/llm-hopper)](https://github.com/yourusername/llm-hopper)
-[![License](https://img.shields.io/github/license/yourusername/llm-hopper)](LICENSE)
+让不同模型（Claude、Kimi、Gemini、DeepSeek、GLM 等）在不同终端、IDE、CLI 会话中组成**虚拟开发团队**，严格按角色（Leader / Builder / Executor / UI-Builder）协作。
 
----
+## 核心特性
 
-## ✨ 为什么需要 llm-hopper？
+- **角色系统**：以 Nickname 为主标识。
+  - **Leader**：仅负责 gstack + GSD 阶段（战略、规划、spec）。
+  - **Builder**：全面执行 Superpowers + Review。
+  - **Executor**：纯执行，只严格遵循指令（零创意）。
+  - **UI-Builder**：专精 Web / 前端 UI（顶级设计感）。
+- **跨进程 / 多模型 / 多 session**：支持不同窗口、不同模型协同。
+- **Cost Tracking**：自动成本记录与报告。
+- **Handoff 机制**：标准化、清晰、可追溯。
+- **完全 prompt-only**：无需安装任何包或二进制。
+- **Todo App Demo**：提供完整演示。
 
-你是不是也这样：
+## 项目结构
 
-- 每月只舍得开 **Claude 20刀 + GPT 20刀 + Gemini 99刀/年 + Kimi 便宜 coding plan**
-- **Claude** 负责写 Spec、架构、开发计划、测试计划（它最强）
-- 剩下脏活累活扔给 GPT / Gemini / Kimi 各自发挥（它们便宜啊！）
-- 最后再拉回 **Claude** 做最终验收
-- **痛苦点**：你得在十几个网页 tab 里像只兔子一样跳来跳去，疯狂 `Ctrl+C / Ctrl+V`，任务描述、代码片段、反馈结果全靠手动……
+```text
+.hopper/
+├── roles/ROLES.md                 # 角色定义
+├── agents/AGENTS.md               # 所有 Agent 实例（Nickname + UUID + Model）
+├── MANIFEST.md                    # 全局映射表
+├── costs/COST-LOG.md              # 成本日志
+├── prompts/
+│   ├── setup-roles.md
+│   ├── reconfigure-roles.md
+│   ├── register-me.md
+│   ├── role-status.md
+│   ├── handoff-to-role.md
+│   ├── track-cost.md
+│   ├── cost-report.md
+│   └── start-new-project-with-roles.md
+├── demo/                          # Todo App 演示
+└── scripts/                       # 可选快捷脚本
+```
 
-**llm-hopper 就是来解决这个痛点的**！
+## 快速开始
 
-它把 **Git 仓库** 当作唯一中央枢纽，让所有 LLM 在同一个“营地”里半自动化接力：
-- 你在任意 LLM 网页里敲一句命令 → Hopper 自动把任务/结果同步到 Git
-- Claude 发号施令 → 其他模型低成本打工 → Claude 最后验收
-- 人类只负责执行最简单的 “skill / command”，剩下全自动
+### 1. 角色初始化（只需做一次）
 
----
+首次设置：
 
-## 🚀 核心特性
+```bash
+LLM-Hopper: run role setup
+```
 
-- **🐰 Hopper 跳跃模式**：支持 Claude / ChatGPT / Gemini / Kimi / 通义千问 等任意网页版 LLM
-- **Git 中央轴**：所有 prompt、代码、评审意见、验收结果全部落在仓库里，可追溯、可分支、可 PR
-- **半自动化工作流**：`@hopper` 指令 + 简单 skill 即可驱动多模型协作
-- **穷鬼友好**：零 API Key 依赖，完全吃你已有的网页订阅套餐
-- **Claude 总指挥**：天然支持“Claude 写计划 → 其他模型执行 → Claude 验收”闭环
-- **极简上手**：5 分钟配置完成，零学习成本
+或使用文件：
 
----
+```bash
+cat .hopper/prompts/setup-roles.md
+```
 
-## 📋 工作流示例（30秒看懂）
+复制 `BEGIN PROMPT` 内容并粘贴到目标 session。
 
-```mermaid
-graph TD
-    A[Claude 写 Spec + 任务拆解] --> B[Git Issue / Task]
-    B --> C{Git 触发 Hopper}
-    C --> D[GPT 执行前端任务]
-    C --> E[Gemini 写后端逻辑]
-    C --> F[Kimi 写测试用例]
-    D & E & F --> G[结果自动 PR 到 Git]
-    G --> H[Claude 统一验收 & 合并]
+### 2. 随时查看角色状态
+
+```bash
+cat .hopper/prompts/role-status.md
+```
+
+复制整个 `BEGIN PROMPT`，粘贴到任意 session。
+
+### 3. 新 session 注册自己（推荐）
+
+在任意模型 session 中运行：
+
+```bash
+cat .hopper/prompts/register-me.md
+```
+
+### 4. 启动新项目（推荐方式）
+
+```bash
+cat .hopper/prompts/start-new-project-with-roles.md
+```
+
+复制 `BEGIN PROMPT`，粘贴到 Leader session（例如 `leader-opus-47`），即可自动开始带角色的完整 workflow。
+
+### 5. 成本追踪
+
+每次 handoff 结束后运行：
+
+```bash
+cat .hopper/prompts/track-cost.md
+```
+
+随时查看报告：
+
+```bash
+cat .hopper/prompts/cost-report.md
+```
+
+所有记录保存在：
+
+```text
+.hopper/costs/COST-LOG.md
+```
+
+## 角色一览（当前配置）
+
+| Nickname | Role | Model | 主要职责 |
+| --- | --- | --- | --- |
+| `leader-opus-47` | Leader | `claude-opus-4-7` | gstack + GSD（决策规划） |
+| `builder-kimi` | Builder | `kimi-2.6` | Superpowers + Review |
+| `mimo` | Builder | `mimo-v2.5-pro` | Superpowers + Review |
+| `ui-builder-gemini` | UI-Builder | `gemini-3.1-pro` | Web / 前端 UI（顶级设计感） |
+| `executor-glm` | Executor | `glm-5.1` | 纯执行（严格遵循指令） |
+| `executor-deepseek` | Executor | `deepseek-v4-flash` | 纯执行（严格遵循指令） |
+
+## Handoff 使用规范
+
+推荐格式：
+
+```markdown
+=== HANDOFF TO ROLE ===
+Use role: ui-builder-gemini
+Completed phase: GSD
+Next phase: Superpowers (UI implementation)
+Prompt:
+根据 TRD.md 中的 spec，实现 Todo App 的现代响应式界面，要求顶级设计感。
+```
+
+日常常用的简写方式：
+
+```text
+Use role: builder-kimi to execute the backend logic strictly following PLAN.md
+```
+
+## Demo 演示
+
+```bash
+cd .hopper/demo
+./start-todo-demo.sh strategy
+```
+
+依次运行：
+
+```text
+strategy -> planning -> execution -> review
+```
+
+每一步都会自动提示使用对应角色。
+
+## 成本追踪
+
+- 运行 `track-cost.md` 记录本次消耗。
+- 运行 `cost-report.md` 查看汇总报告。
+- 所有记录保存在 `.hopper/costs/COST-LOG.md`。
+
+## 最佳实践
+
+- **Leader** 永远负责早期决策（gstack + GSD）。
+- **UI 相关任务** 优先交给 `ui-builder-gemini`。
+- **纯代码执行** 交给 Executor，避免模型乱加功能。
+- 每次重要 handoff 后记录成本。
+- 多窗口并行：一个窗口跑 Leader，另一个窗口跑 Builder / Executor。
+- 定期运行 `role-status` 查看团队状态。
+
+## 扩展方式
+
+想增加新角色：
+
+1. 修改 `.hopper/roles/ROLES.md`。
+2. 运行 `.hopper/prompts/reconfigure-roles.md`。
+
+想调整模型：
+
+1. 运行 `.hopper/prompts/reconfigure-roles.md`。
+
+想增加新 Direction（如 Backend、Testing）：
+
+1. 直接在 `.hopper/roles/ROLES.md` 扩展即可。
+
+## 使用方法
+
+复制本 README 中需要的 prompt 文件命令，在项目根目录执行后，将对应内容粘贴到目标模型 session。
+
+LLM-Hopper v0.1 已就绪。你现在拥有了一个真正的 prompt-only 多角色 AI 开发团队。

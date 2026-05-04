@@ -9,7 +9,7 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 - Requested model profile: GPT-5.5 xhigh
 - Execution mode: prompt-only, zero-code, markdown-artifact-only
 - Workspace: `F:\workspace\ai\llm-hopper`
-- Timestamp: `2026-05-03T03:14:00+08:00`
+- Timestamp: `2026-05-04T02:03:40+08:00`
 
 ## Phase State
 
@@ -54,6 +54,23 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 - Product and strategy context lives in `PROJECT.md`, `PRD.md`, and `DECISIONS.md`.
 - Future phases must update this file instead of relying on chat memory.
 - No generated app runtime code, packages, binaries, or external dependencies are allowed during the prompt-only bootstrap.
+
+## Role-to-Agent Mapping
+
+Primary identifier: **Nickname** (UUID is fallback).
+
+| Nickname | Role | Model | UUID | Activated |
+|----------|------|-------|------|-----------|
+| `leader-opus-47` | Leader | `claude-opus-4-7` | `2620cc7a-25e6-4059-999e-17af54bdcaf4` | 2026-05-03 |
+| `builder-kimi` | Builder | `kimi-2.6` | `6c5ac7fa-7a5e-40b4-920a-b4fe1d562876` | 2026-05-04 |
+| `executor-glm` | Executor | `glm-5.1` | `820cba1c-80de-45fc-a514-2f5de38fd804` | 2026-05-03 |
+| `ui-builder-gemini` | UI-Builder | `gemini-3.1-pro` | `bbf6602d-13c0-42d3-a1fc-59cbe7424b49` | 2026-05-03 |
+| `mimo` | Builder | `mimo-v2.5-pro` | `6db17b47-ba7f-4a16-8890-832ce18c43cb` | 2026-05-04 |
+| `executor-deepseek` | Executor | `deepseek-v4-flash` | `b35ea656-1833-40b0-81cd-99c3a533da1a` | 2026-05-04 |
+
+- UI Direction: enabled (Builder only — UI-Leader / UI-Executor unassigned)
+- Agents file: `.hopper/agents/AGENTS.md`
+- Reassignment: update both this table and `AGENTS.md` together; UUIDs are stable across model swaps.
 
 ## Next Handoff Command
 
