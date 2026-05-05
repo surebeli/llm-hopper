@@ -26,7 +26,7 @@ Anchor: `.hopper/skill/hopper-handoff.md::files-to-read`
 2. `ROADMAP.md` (mandatory; confirm the next phase boundary and required artifacts).
 3. `DECISIONS.md::model-routing-table` (mandatory; pick the correct role for the next phase).
 4. `TRD.md::handoff-block-schema` (mandatory; format contract).
-5. The artifact set declared by the completed phase in `TRD.md::phase-mutation-rules`.
+5. The artifact set declared by the completed phase in `TRD.md::data-and-state-files` and `TRD.md::role-contracts`.
 
 ## Files Allowed To Modify
 
@@ -87,5 +87,5 @@ The prompt section must:
 
 - Name every authoritative file the next session must read.
 - State the exact directories or files the next session is allowed to create or modify.
-- Cite the relevant `TRD.md::phase-mutation-rules` entry for that phase.
+- Cite the relevant `TRD.md::data-and-state-files` row for that phase.
 - End without trailing commentary so the user can copy and paste it as a single block.

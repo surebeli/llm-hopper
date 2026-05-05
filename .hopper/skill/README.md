@@ -8,7 +8,7 @@ Anchor: `.hopper/skill/README.md::overview`
 
 This directory contains prompt-only command templates that guide a model session through bounded LLM-Hopper operations. There is no plugin, no slash-command runtime, and no installer. A user copies the body of a template into the active model session, and the model follows the protocol declared by the template.
 
-These templates implement the convention defined in `TRD.md::skill-template-convention`. They obey the cross-process contract from `DECISIONS.md::engineering-review` and the phase mutation rules from `TRD.md::phase-mutation-rules`.
+These templates implement the convention defined in `TRD.md::skill-template-convention`. They obey the cross-process contract from `DECISIONS.md::engineering-review` and the artifact ownership rules from `TRD.md::data-and-state-files` and `TRD.md::role-contracts`.
 
 ## Templates
 

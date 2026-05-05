@@ -37,12 +37,11 @@ Anchor: `.hopper/skill/hopper-execute.md::files-to-read`
 
 Anchor: `.hopper/skill/hopper-execute.md::files-allowed-to-modify`
 
-The current phase's owned directories per `TRD.md::phase-mutation-rules`. For Phase 3 this is:
+The current phase's owned artifacts per `TRD.md::data-and-state-files` and `TRD.md::role-contracts`. The exact set depends on the active phase named by `.hopper/MANIFEST.md`:
 
-- `.hopper/skill/`
-- `.hopper/prompts/`
-- `.hopper/demo/`
-- `.hopper/MANIFEST.md` (only via `hopper-handoff.md` semantics at the phase boundary).
+- Phase 3 (execution kit): `.hopper/skill/`, `.hopper/prompts/`, `.hopper/demo/`.
+- Phase 5 (Todo App validation): `.planning/phases/05-todo-app-build/`, `apps/todo/` (Executor task scope only).
+- Any phase: `.hopper/MANIFEST.md` only via `hopper-handoff.md` semantics at the phase boundary.
 
 Do not modify `PROJECT.md`, `PRD.md`, `DECISIONS.md`, `TRD.md`, `ROADMAP.md`, or `.planning/` from this skill. If a contradiction is discovered, stop and route the issue to a strategy or planning model per `DECISIONS.md::model-routing-rules` rule 4.
 
