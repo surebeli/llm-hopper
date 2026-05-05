@@ -30,6 +30,15 @@
 └── scripts/                       # 可选快捷脚本
 ```
 
+## 架构状态
+
+- 当前版本线：v0.2 handoff kit；v0.2.1 是文档与状态一致性修复轨。
+- 当前状态：Phase 4 Quality Convergence complete；Phase 5 Todo App validation pending，尚未派发 Executor task。
+- 状态源头：`.hopper/MANIFEST.md` 是 phase cursor，`.planning/STATE.md` 是 GSD-compatible planning cursor。
+- 角色源头：`.hopper/roles/ROLES.md` 定义权限，`.hopper/agents/AGENTS.md` 绑定本地 Nickname 和 Model。
+- Prompt surface：只保留 `start-new-project-with-roles.md`、`handoff-to-role.md`、`track-cost.md`、`cost-report.md`。
+- 执行纪律：Leader 定策略，Builder 拆 TDD task，Executor 只执行单 task，Builder review 后才派发下一步。
+
 ## 快速开始
 
 ### 1. 启动新项目（主入口）
@@ -117,13 +126,13 @@ Use role: builder-primary to execute the backend logic strictly following PLAN.m
 
 ```bash
 cd .hopper/demo
-./start-todo-demo.sh strategy
+./start-todo-demo.sh kickoff
 ```
 
 依次运行：
 
 ```text
-strategy -> planning -> execution -> review
+kickoff -> disassemble -> execute -> builder-review
 ```
 
 每一步都会自动提示使用对应角色。
