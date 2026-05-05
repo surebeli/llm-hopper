@@ -1,0 +1,49 @@
+.hopper/skill-package/install.sh
+  d4a3f034bc1825da 1-122
+.hopper/skill-package/codex/prompts/hopper.md
+  d4a3f034bc1825da 1-34
+.hopper/skill-package/install.ps1
+  d4a3f034bc1825da 1-99
+.hopper/skill-package/claude-code/SKILL.md
+  d4a3f034bc1825da 1-54
+.hopper/skill-package/codex/prompts/cost-report.md
+  d4a3f034bc1825da 1-15
+.hopper/skill-package/README.md
+  d4a3f034bc1825da 1-116
+.hopper/skill-package/claude-code/commands/role-status.md
+  d4a3f034bc1825da 1-21
+.hopper/skill-package/codex/prompts/track-cost.md
+  d4a3f034bc1825da 1-16
+.hopper/skill-package/claude-code/commands/track-cost.md
+  d4a3f034bc1825da 1-18
+.hopper/skill-package/claude-code/commands/hopper.md
+  d4a3f034bc1825da 1-40
+.hopper/skill-package/codex/prompts/use-role.md
+  d4a3f034bc1825da 1-25
+.hopper/skill-package/claude-code/commands/cost-report.md
+  d4a3f034bc1825da 1-17
+.hopper/skill-package/claude-code/commands/use-role.md
+  d4a3f034bc1825da 1-27
+.hopper/skill-package/codex/prompts/role-status.md
+  d4a3f034bc1825da 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "4c7b637d9ccd410946042d308b6d299c0ea76dfe",
+  "prompts": {
+    "d4a3f034bc1825da": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab66d268-7e4d-4847-9c33-bf905729220d",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 623,
+      "overriden_lines": 0
+    }
+  }
+}
