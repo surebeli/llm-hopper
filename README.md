@@ -21,53 +21,18 @@
 ├── MANIFEST.md                    # 全局映射表
 ├── costs/COST-LOG.md              # 成本日志
 ├── prompts/
-│   ├── setup-roles.md
-│   ├── reconfigure-roles.md
-│   ├── register-me.md
-│   ├── role-status.md
+│   ├── README.md
+│   ├── start-new-project-with-roles.md
 │   ├── handoff-to-role.md
 │   ├── track-cost.md
-│   ├── cost-report.md
-│   └── start-new-project-with-roles.md
+│   └── cost-report.md
 ├── demo/                          # Todo App 演示
 └── scripts/                       # 可选快捷脚本
 ```
 
 ## 快速开始
 
-### 1. 角色初始化（只需做一次）
-
-首次设置：
-
-```bash
-LLM-Hopper: run role setup
-```
-
-或使用文件：
-
-```bash
-cat .hopper/prompts/setup-roles.md
-```
-
-复制 `BEGIN PROMPT` 内容并粘贴到目标 session。
-
-### 2. 随时查看角色状态
-
-```bash
-cat .hopper/prompts/role-status.md
-```
-
-复制整个 `BEGIN PROMPT`，粘贴到任意 session。
-
-### 3. 新 session 注册自己（推荐）
-
-在任意模型 session 中运行：
-
-```bash
-cat .hopper/prompts/register-me.md
-```
-
-### 4. 启动新项目（推荐方式）
+### 1. 启动新项目（主入口）
 
 ```bash
 cat .hopper/prompts/start-new-project-with-roles.md
@@ -75,7 +40,15 @@ cat .hopper/prompts/start-new-project-with-roles.md
 
 复制 `BEGIN PROMPT`，粘贴到 Leader session（例如 `leader-opus-47`），即可自动开始带角色的完整 workflow。
 
-### 5. 成本追踪
+### 2. 继续任意 handoff（主入口）
+
+```bash
+cat .hopper/prompts/handoff-to-role.md
+```
+
+复制 `BEGIN PROMPT`，粘贴到下一角色 session。该 prompt 覆盖 FINAL SYNC、TDD task spec 与 Builder 强化验收。
+
+### 3. 成本追踪
 
 每次 handoff 结束后运行：
 
@@ -113,11 +86,10 @@ cat .hopper/prompts/cost-report.md
 
 1. 修改 **源头文件**（推荐）：
    - 编辑 `.hopper/agents/AGENTS.md`（添加、删除、修改角色）
-   - 或运行 `reconfigure-roles.md` 进行交互式调整
+   - 或直接维护 `.hopper/agents/AGENTS.md` 中的 Nickname / Role / Model 映射
 
 2. 更新本 README.md 中的表格（只需复制粘贴最新状态）：
-   - 运行 `role-status.md`
-   - 把输出的 Confirmation Table 复制到上面表格中即可
+   - 以 `.hopper/agents/AGENTS.md` 为源头复制最新配置
 
 3. 不同项目使用不同配置：
    - 每个新项目都可以有完全独立的角色组合（只需在该项目仓库的 .hopper/ 目录下修改即可）
@@ -164,8 +136,8 @@ strategy -> planning -> execution -> review
 
 ## 最佳实践
 
-- 每个项目开始时，建议先运行 `role-status.md` 确认角色配置是否符合当前项目需求
-- 需要调整时，直接修改 `.hopper/agents/AGENTS.md` 或运行 `reconfigure-roles.md`
+- 每个项目开始时，建议先查看 `.hopper/agents/AGENTS.md` 确认角色配置是否符合当前项目需求
+- 需要调整时，直接修改 `.hopper/agents/AGENTS.md`
 - README.md 中的角色表格仅作为**文档参考**，以 `.hopper/agents/AGENTS.md` 为最终配置
 
 ## 扩展方式
@@ -173,11 +145,11 @@ strategy -> planning -> execution -> review
 想增加新角色：
 
 1. 修改 `.hopper/roles/ROLES.md`。
-2. 运行 `.hopper/prompts/reconfigure-roles.md`。
+2. 更新 `.hopper/agents/AGENTS.md` 中的 Nickname 映射。
 
 想调整模型：
 
-1. 运行 `.hopper/prompts/reconfigure-roles.md`。
+1. 更新 `.hopper/agents/AGENTS.md` 中的 Model 字段。
 
 想增加新 Direction（如 Backend、Testing）：
 

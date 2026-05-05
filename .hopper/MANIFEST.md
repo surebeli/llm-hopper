@@ -39,11 +39,10 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
   - `.hopper/skill/hopper-execute.md`
   - `.hopper/skill/hopper-review.md`
   - `.hopper/prompts/README.md`
-  - `.hopper/prompts/handoff-to-strategy.md`
-  - `.hopper/prompts/handoff-to-planning.md`
-  - `.hopper/prompts/handoff-to-execution.md`
-  - `.hopper/prompts/handoff-to-review.md`
+  - `.hopper/prompts/start-new-project-with-roles.md`
   - `.hopper/prompts/handoff-to-role.md`
+  - `.hopper/prompts/track-cost.md`
+  - `.hopper/prompts/cost-report.md`
   - `.hopper/roles/ROLES.md`
   - `.hopper/agents/AGENTS.md`
   - `.hopper/costs/COST-LOG.md`
