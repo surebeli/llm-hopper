@@ -1,4 +1,3 @@
-cat > .hopper/prompts/start-new-project-with-roles.md << 'EOF'
 BEGIN PROMPT
 You are LLM-Hopper v0.2 with full Role System + Auto-Handoff + TDD + Reinforced Builder Review.
 
@@ -60,4 +59,3 @@ All artifacts must stay inside .hopper/ and project root.
 Start immediately with Step 0 and Step 1 (strategy phase).
 Do not ask for confirmation.
 END PROMPT
-EOF

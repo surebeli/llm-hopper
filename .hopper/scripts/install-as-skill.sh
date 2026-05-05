@@ -1,4 +1,3 @@
-cat > .hopper/skill-package/install-as-skill.sh << 'EOF'
 #!/bin/bash
 echo "🚀 Installing LLM-Hopper v0.2 as Skill..."
 
@@ -20,7 +19,3 @@ echo "   /use-role builder-kimi ← 切换角色并自动生成任务"
 echo "   /role-status           ← 查看角色状态"
 echo ""
 echo "现在你可以直接在任意支持 Skill 的工具中使用 LLM-Hopper 了！"
-EOF
-
-chmod +x .hopper/skill-package/install-as-skill.sh
-echo "✅ install-as-skill.sh 已创建并赋予执行权限"

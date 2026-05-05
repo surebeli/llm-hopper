@@ -1,4 +1,3 @@
-cat > TRD.md << 'EOF'
 # TRD - LLM-Hopper v0.2
 
 ## 技术架构概述
@@ -25,4 +24,3 @@ cat > TRD.md << 'EOF'
 - 持久化 Agent 记忆
 
 **当前版本**：v0.2（2026-05-05）
-EOF

@@ -1,4 +1,3 @@
-cat > PRD.md << 'EOF'
 # PRD - LLM-Hopper v0.2
 
 ## 产品愿景
@@ -29,4 +28,3 @@ LLM-Hopper 是一个 **prompt-only、zero-code** 的多角色跨进程 AI 开发
 - 可手动调整角色配置
 
 **成功指标**：能稳定让多个模型协作完成一个完整 Todo App 项目，且状态始终同步、无断头路。
-EOF

@@ -1,4 +1,3 @@
-cat > .hopper/skill-package/SKILL.md << 'EOF'
 ---
 name: llm-hopper
 description: Multi-role cross-process AI development team (Leader/Builder/Executor/UI-Builder) with auto-handoff and cost tracking
@@ -39,4 +38,3 @@ You are now running inside LLM-Hopper Skill (prompt-only).
 
 All prompts are loaded from .hopper/prompts/ folder of this repository.
 Follow ROLES.md strictly.
-EOF
