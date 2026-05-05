@@ -1,0 +1,72 @@
+.hopper/prompts/start-new-project-with-roles.md
+  0000019df6f94771 1-61
+.hopper/scripts/install-as-skill.sh
+  0000019df6f94771 1-21
+.hopper/skill-package/SKILL.md
+  0000019df6f94771 1-40
+PRD.md
+  0000019df6f94771 1-30
+TRD.md
+  0000019df6f94771 1-26
+.hopper/skill-package/install-as-skill.sh
+  0000019df6f94771 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "ec9319b91366e8fb00b9858d3ccc712d95522107",
+  "prompts": {
+    "272a40429ec25e92": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1777964992354621300",
+        "model": "unknown"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019df6f8d32c": {
+      "agent_id": {
+        "id": "ai-thread-codex-gpt-5.5-1777964995372",
+        "tool": "codex",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019df6f8f5c3": {
+      "agent_id": {
+        "id": "ai-thread-codex-gpt-5.5-1777965004227",
+        "model": "gpt-5.5",
+        "tool": "codex"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019df6f94771": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "model": "unknown",
+        "id": "ai-thread-mockai-1777965025137"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 197,
+      "total_deletions": 0,
+      "accepted_lines": 197,
+      "overriden_lines": 0
+    }
+  }
+}
