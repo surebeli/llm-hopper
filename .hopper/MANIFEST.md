@@ -4,10 +4,10 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 
 ## Runtime Identity
 
-- Runtime identity: LLM-Hopper v0.2 (Superpowers Todo App build, in progress)
+- Runtime identity: LLM-Hopper v0.2 (Phase 4 complete, Phase 5 pending)
 - Host environment: Codex CLI / Claude Code CLI (compatible)
 - Requested model profile: Builder (kimi-2.6) for disassembly + review; Executor (glm-5.1) for atomic task execution
-- Execution mode: prompt-only handoff kit + real apps/todo/ implementation
+- Execution mode: prompt-only handoff kit; Phase 5 validation build not started
 - Workspace: `F:\workspace\ai\llm-hopper`
 - Timestamp: `2026-05-05T00:00:00+08:00`
 
@@ -18,7 +18,7 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 - Phase 2: GSD context and roadmap layer complete
 - Phase 3: Superpowers execution kit complete
 - Phase 4: Quality convergence complete
-- Phase 5: Superpowers Todo App Build — IN PROGRESS (spec disassembled by builder-kimi 2026-05-05; T01 dispatched to executor-glm)
+- Phase 5: Superpowers Todo App Build validation — PENDING (no Executor task dispatched)
 - Current authoritative artifacts:
   - `PROJECT.md`
   - `PRD.md`
@@ -32,7 +32,6 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
   - `.planning/phases/02-gsd-context-and-roadmap-layer/02-CONTEXT.md`
   - `.planning/phases/02-gsd-context-and-roadmap-layer/02-01-PLAN.md`
   - `.planning/phases/02-gsd-context-and-roadmap-layer/02-02-PLAN.md`
-  - `.planning/phases/05-todo-app-build/TASK-LIST.md`
   - `.hopper/MANIFEST.md`
   - `.hopper/skill/README.md`
   - `.hopper/skill/hopper-status.md`
@@ -52,7 +51,7 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
   - `.hopper/demo/ACCEPTANCE.md`
   - `.hopper/demo/REVIEW-CHECKLIST.md`
   - `.hopper/demo/start-todo-demo.sh`
-- Next phase: Phase 5 plan 05-01 — Executor builds T01 (`apps/todo/index.html`), then hands back to Builder for review
+- Next phase: Phase 5 plan 05-00 — Builder starts Todo App task disassembly, then dispatches the first Executor task only after the task list is reviewed
 
 ## Persistence Rules
 
@@ -81,16 +80,15 @@ Primary identifier: **Nickname** (UUID is fallback).
 ## Next Handoff Command
 
 LLM-HOPPER HANDOFF
-Completed phase: Phase 5 plan 05-00 — Builder spec disassembly (`builder-kimi`)
-Next phase: Phase 5 plan 05-01 — Executor builds T01 (`apps/todo/index.html`)
-Recommended model profile: Executor (`executor-glm`, model `glm-5.1`); fallback `executor-deepseek`.
+Completed phase: Phase 4 — Quality Convergence
+Next phase: Phase 5 plan 05-00 — Builder Todo App task disassembly
+Recommended model profile: Builder role; choose the current configured Builder agent.
 Authoritative files:
 - `.hopper/MANIFEST.md`
 - `.hopper/roles/ROLES.md`
 - `.hopper/agents/AGENTS.md`
 - `.hopper/prompts/handoff-to-role.md`
-- `.planning/phases/05-todo-app-build/TASK-LIST.md` (read T01 section only — out-of-scope)
 - `ROADMAP.md` (Phase 5 section)
 - `.planning/STATE.md`
 Prompt:
-See the HANDOFF TO ROLE block emitted by `builder-kimi` at the end of the spec-disassembly turn (target: `executor-glm`, scope: T01 only). The Executor must implement only `apps/todo/index.html` per T01's contract, must not introduce CSS or JS, and must hand back to Builder upon GREEN.
+Use `.hopper/prompts/start-new-project-with-roles.md` or `.hopper/prompts/handoff-to-role.md` to start Phase 5. The Builder must first produce a reviewed task list with RED/GREEN/REFACTOR acceptance criteria before any Executor receives implementation scope.

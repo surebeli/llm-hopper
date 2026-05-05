@@ -19,7 +19,7 @@ Anchor: `ROADMAP.md::milestones`
 | M02 | Phase 2: GSD Context and Roadmap Layer | Complete | `TRD.md`, `ROADMAP.md`, `.planning/` |
 | M03 | Phase 3: Superpowers Execution Kit | Complete | `.hopper/skill/`, `.hopper/prompts/`, `.hopper/demo/` |
 | M04 | Phase 4: Quality Convergence | Complete | Review notes, polished artifacts, release checklist |
-| M05 | Phase 5: Superpowers Todo App Build | In Progress | `apps/todo/` (vanilla HTML+CSS+JS, 5 atomic tasks) |
+| M05 | Phase 5: Superpowers Todo App Build | Pending | `apps/todo/` validation build plan |
 
 ## Phase Details
 
@@ -139,7 +139,7 @@ Anchor: `ROADMAP.md::m04-quality-convergence`
 
 Anchor: `ROADMAP.md::m05-superpowers-todo-app-build`
 
-**Goal:** Live test of Builder-driven spec disassembly. Take the high-level spec ("simple Todo App with add / complete / delete / list, modern responsive UI") and produce a working app via atomic Executor-grade tasks, validating the role-permission boundaries from `.hopper/roles/ROLES.md`.
+**Goal:** Pending live test of Builder-driven spec disassembly. Take the high-level spec ("simple Todo App with add / complete / delete / list, modern responsive UI") and produce a working app via atomic Executor-grade tasks, validating the role-permission boundaries from `.hopper/roles/ROLES.md`.
 
 **Depends on:** Phase 4 (release of the prompt-only kit).
 
@@ -155,7 +155,7 @@ Anchor: `ROADMAP.md::m05-superpowers-todo-app-build`
 
 **Plans:**
 
-- [x] 05-00: Builder spec disassembly (`.planning/phases/05-todo-app-build/TASK-LIST.md`).
+- [ ] 05-00: Builder spec disassembly (`.planning/phases/05-todo-app-build/TASK-LIST.md`).
 - [ ] 05-01: T01 — Project skeleton + semantic HTML (`apps/todo/index.html`).
 - [ ] 05-02: T02 — Modern responsive CSS (`apps/todo/styles.css`).
 - [ ] 05-03: T03 — Data model + localStorage (`apps/todo/store.js`).
@@ -185,4 +185,4 @@ Anchor: `ROADMAP.md::progress`
 | 2. GSD Context and Roadmap Layer | 2/2 | Complete | 2026-05-03 |
 | 3. Superpowers Execution Kit | 3/3 | Complete | 2026-05-03 |
 | 4. Quality Convergence | 2/2 | Complete | 2026-05-03 |
-| 5. Superpowers Todo App Build | 1/6 | In Progress | — |
+| 5. Superpowers Todo App Build | 0/6 | Pending | — |
