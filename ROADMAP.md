@@ -19,6 +19,7 @@ Anchor: `ROADMAP.md::milestones`
 | M02 | Phase 2: GSD Context and Roadmap Layer | Complete | `TRD.md`, `ROADMAP.md`, `.planning/` |
 | M03 | Phase 3: Superpowers Execution Kit | Complete | `.hopper/skill/`, `.hopper/prompts/`, `.hopper/demo/` |
 | M04 | Phase 4: Quality Convergence | Complete | Review notes, polished artifacts, release checklist |
+| M05 | Phase 5: Superpowers Todo App Build | In Progress | `apps/todo/` (vanilla HTML+CSS+JS, 5 atomic tasks) |
 
 ## Phase Details
 
@@ -134,6 +135,33 @@ Anchor: `ROADMAP.md::m04-quality-convergence`
 - [x] 04-01: Run cross-artifact consistency and anchor review.
 - [x] 04-02: Polish release checklist and final handoff.
 
+### Phase 5: Superpowers Todo App Build
+
+Anchor: `ROADMAP.md::m05-superpowers-todo-app-build`
+
+**Goal:** Live test of Builder-driven spec disassembly. Take the high-level spec ("simple Todo App with add / complete / delete / list, modern responsive UI") and produce a working app via atomic Executor-grade tasks, validating the role-permission boundaries from `.hopper/roles/ROLES.md`.
+
+**Depends on:** Phase 4 (release of the prompt-only kit).
+
+**Requirements:** demonstrates `FR-4`, `FR-5`, `FR-6`, `FR-7` end-to-end with real implementation rather than artifact-only walkthrough.
+
+**Success Criteria:**
+
+1. Builder produces atomic task list at `.planning/phases/05-todo-app-build/TASK-LIST.md` with 5 tasks each carrying RED-GREEN-REFACTOR + acceptance criteria.
+2. Executor implements one task at a time strictly within the task contract, hands back to Builder per task.
+3. Final `apps/todo/` app supports add / mark-complete / delete / list with responsive modern UI and localStorage persistence.
+4. No framework, no build step, no API calls.
+5. Builder reviews each task's GREEN before dispatching the next.
+
+**Plans:**
+
+- [x] 05-00: Builder spec disassembly (`.planning/phases/05-todo-app-build/TASK-LIST.md`).
+- [ ] 05-01: T01 — Project skeleton + semantic HTML (`apps/todo/index.html`).
+- [ ] 05-02: T02 — Modern responsive CSS (`apps/todo/styles.css`).
+- [ ] 05-03: T03 — Data model + localStorage (`apps/todo/store.js`).
+- [ ] 05-04: T04 — View layer + DOM event wiring (`apps/todo/app.js`).
+- [ ] 05-05: T05 — Polish: empty state, animations, accessibility.
+
 ## Risks
 
 Anchor: `ROADMAP.md::risks`
@@ -157,3 +185,4 @@ Anchor: `ROADMAP.md::progress`
 | 2. GSD Context and Roadmap Layer | 2/2 | Complete | 2026-05-03 |
 | 3. Superpowers Execution Kit | 3/3 | Complete | 2026-05-03 |
 | 4. Quality Convergence | 2/2 | Complete | 2026-05-03 |
+| 5. Superpowers Todo App Build | 1/6 | In Progress | — |

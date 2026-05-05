@@ -4,12 +4,12 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 
 ## Runtime Identity
 
-- Runtime identity: LLM-Hopper v0.1
-- Host environment: Codex CLI
-- Requested model profile: GPT-5.5 xhigh
-- Execution mode: prompt-only, zero-code, markdown-artifact-only
+- Runtime identity: LLM-Hopper v0.2 (Superpowers Todo App build, in progress)
+- Host environment: Codex CLI / Claude Code CLI (compatible)
+- Requested model profile: Builder (kimi-2.6) for disassembly + review; Executor (glm-5.1) for atomic task execution
+- Execution mode: prompt-only handoff kit + real apps/todo/ implementation
 - Workspace: `F:\workspace\ai\llm-hopper`
-- Timestamp: `2026-05-04T02:03:40+08:00`
+- Timestamp: `2026-05-05T00:00:00+08:00`
 
 ## Phase State
 
@@ -18,6 +18,7 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 - Phase 2: GSD context and roadmap layer complete
 - Phase 3: Superpowers execution kit complete
 - Phase 4: Quality convergence complete
+- Phase 5: Superpowers Todo App Build — IN PROGRESS (spec disassembled by builder-kimi 2026-05-05; T01 dispatched to executor-glm)
 - Current authoritative artifacts:
   - `PROJECT.md`
   - `PRD.md`
@@ -31,6 +32,7 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
   - `.planning/phases/02-gsd-context-and-roadmap-layer/02-CONTEXT.md`
   - `.planning/phases/02-gsd-context-and-roadmap-layer/02-01-PLAN.md`
   - `.planning/phases/02-gsd-context-and-roadmap-layer/02-02-PLAN.md`
+  - `.planning/phases/05-todo-app-build/TASK-LIST.md`
   - `.hopper/MANIFEST.md`
   - `.hopper/skill/README.md`
   - `.hopper/skill/hopper-status.md`
@@ -42,11 +44,15 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
   - `.hopper/prompts/handoff-to-planning.md`
   - `.hopper/prompts/handoff-to-execution.md`
   - `.hopper/prompts/handoff-to-review.md`
+  - `.hopper/prompts/handoff-to-role.md`
+  - `.hopper/roles/ROLES.md`
+  - `.hopper/agents/AGENTS.md`
+  - `.hopper/costs/COST-LOG.md`
   - `.hopper/demo/TODO-APP.md`
   - `.hopper/demo/ACCEPTANCE.md`
   - `.hopper/demo/REVIEW-CHECKLIST.md`
   - `.hopper/demo/start-todo-demo.sh`
-- Next phase: Release - LLM-Hopper v0.1
+- Next phase: Phase 5 plan 05-01 — Executor builds T01 (`apps/todo/index.html`), then hands back to Builder for review
 
 ## Persistence Rules
 
@@ -75,19 +81,16 @@ Primary identifier: **Nickname** (UUID is fallback).
 ## Next Handoff Command
 
 LLM-HOPPER HANDOFF
-Completed phase: Phase 4 - Quality convergence
-Next phase: Release - LLM-Hopper v0.1
-Recommended model profile: Strategy or Planning, only if a substantive change is needed; otherwise no further model session is required.
+Completed phase: Phase 5 plan 05-00 — Builder spec disassembly (`builder-kimi`)
+Next phase: Phase 5 plan 05-01 — Executor builds T01 (`apps/todo/index.html`)
+Recommended model profile: Executor (`executor-glm`, model `glm-5.1`); fallback `executor-deepseek`.
 Authoritative files:
-- PROJECT.md
-- PRD.md
-- DECISIONS.md
-- TRD.md
-- ROADMAP.md
-- .planning/ (all files)
-- .hopper/MANIFEST.md
-- .hopper/skill/ (all files)
-- .hopper/prompts/ (all files)
-- .hopper/demo/ (all files including start-todo-demo.sh)
+- `.hopper/MANIFEST.md`
+- `.hopper/roles/ROLES.md`
+- `.hopper/agents/AGENTS.md`
+- `.hopper/prompts/handoff-to-role.md`
+- `.planning/phases/05-todo-app-build/TASK-LIST.md` (read T01 section only — out-of-scope)
+- `ROADMAP.md` (Phase 5 section)
+- `.planning/STATE.md`
 Prompt:
-LLM-Hopper v0.1 is ready for use. The artifact set has passed quality convergence. To start a new project, open a fresh Codex CLI session with a strategy-class model, clone or fork this repository, and paste the prompt from .hopper/prompts/handoff-to-strategy.md. To run the Todo App demo, run ./.hopper/demo/start-todo-demo.sh. No package installs, API keys, daemons, or binary artifacts are required.
+See the HANDOFF TO ROLE block emitted by `builder-kimi` at the end of the spec-disassembly turn (target: `executor-glm`, scope: T01 only). The Executor must implement only `apps/todo/index.html` per T01's contract, must not introduce CSS or JS, and must hand back to Builder upon GREEN.
