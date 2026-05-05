@@ -15,3 +15,8 @@
 - Repackaged `.hopper/skill-package/` to ship native Claude Code skill +
   slash commands and Codex CLI custom prompts with a real bash/PowerShell
   installer (`--target`, `--scope`, `--dry-run`, `--uninstall`).
+- Expanded `.gitignore` to cover OS metadata, common IDE/editor state,
+  logs, and local env files.
+- Added `TRD.md::error-handling-matrix` (10 failure classes with detection
+  and recovery paths) and `TRD.md::compatibility-matrix` (host support
+  tiers from Claude Code Tier 1 down to generic web chat Tier 3).

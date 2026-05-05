@@ -212,6 +212,58 @@ Anchor: `TRD.md::non-goals`
 - No hidden state outside Git-tracked files.
 - No automatic proof that a model followed instructions without review evidence.
 
+## Error Handling Matrix
+
+Anchor: `TRD.md::error-handling-matrix`
+
+The kit has no runtime, so every "error" is a state or content discrepancy a
+session must detect and recover from by hand or by handoff. Sessions must
+detect and respond to the following ten classes of failure.
+
+| # | Failure | Detection | Recovery Path |
+|---|---------|-----------|---------------|
+| E-01 | `.hopper/MANIFEST.md` missing or unreadable. | Cold-start session cannot find phase cursor. | Stop. Tell the user this directory is not an LLM-Hopper project root. Do not write any artifact. |
+| E-02 | Manifest claims a phase complete but the named artifact is missing. | Session compares `.hopper/MANIFEST.md` "current authoritative artifacts" against the filesystem. | Stop. Emit a Leader handoff to repair the cursor (rollback or re-run the missing phase). Never advance. |
+| E-03 | `.planning/STATE.md` and `.hopper/MANIFEST.md` disagree on phase. | Session reads both and detects mismatch. | Stop. Treat `MANIFEST.md` as authoritative for phase, `STATE.md` for plan-level granularity. Emit a Builder fix handoff before any further work. |
+| E-04 | `.hopper/agents/AGENTS.md` still contains placeholder models (e.g. `<leader-model>`). | `/hopper start` or `/use-role` runs and finds `<...>` in Model column. | Stop. Tell the user to set local model IDs first. Do not call the Leader prompt with a placeholder model. |
+| E-05 | Handoff names a Nickname that is not in `.hopper/agents/AGENTS.md`. | `/use-role <nickname>` cannot match. | Stop. List active Nicknames. Ask the user to pick or to register a new one in `AGENTS.md`. |
+| E-06 | Executor edits a file outside "Files allowed to touch". | Builder Reinforced Review step 3 detects scope creep. | Reject the task. Emit a fix handoff back to the same Executor with the exact violations and the original allowed-files list. Do not GREEN-light. |
+| E-07 | Executor cannot satisfy a GREEN acceptance criterion due to ambiguity. | Executor reads task spec and finds a contradiction or missing detail. | Stop work on that task. Emit a handoff back to the Builder citing the exact criterion and the unresolved question. Do not invent product policy. |
+| E-08 | Anchor reference points at a non-existent section (e.g. `FILE.md::missing`). | A session reads a doc and grep'ing the cited anchor returns nothing. | Note the broken anchor. Either repair the citation in place (if obvious) or emit a Leader/Builder handoff to fix the anchor at the canonical owner per `DECISIONS.md::artifact-ownership`. |
+| E-09 | `.planning/phases/<phase>/TASK-LIST.md` is missing when an Executor session starts. | Executor cannot read its task spec. | Stop. Emit a Builder handoff requesting disassembly. Executor must not propose a task list itself. |
+| E-10 | `.hopper/costs/COST-LOG.md` is empty or missing when `/cost-report` runs. | Cost report skill reads the file and finds no entries. | Print "no cost entries yet" and stop without errors. Do not synthesize fake cost data. |
+
+Out of scope for this matrix: model-provider-side failures (rate limits,
+quota, network). Those are caught by the host CLI/IDE, not by LLM-Hopper.
+
+## Compatibility Matrix
+
+Anchor: `TRD.md::compatibility-matrix`
+
+LLM-Hopper is prompt-only and tool-agnostic, but the native skill package
+ships with explicit support for the agents below. Other tools work via
+manual paste of the same prompts.
+
+| Host | Support Level | Native Integration | Notes |
+|------|---------------|--------------------|-------|
+| Claude Code (CLI / IDE) | Tier 1 | Native skill (`.claude/skills/llm-hopper/SKILL.md`) + 5 slash commands in `.claude/commands/`. | Installer: `bash .hopper/skill-package/install.sh --target claude-code`. Project or user scope. |
+| Codex CLI | Tier 1 | Native custom prompts in `~/.codex/prompts/` become 5 slash commands. | Installer: `bash .hopper/skill-package/install.sh --target codex`. User scope only. |
+| Cursor (Composer / Agent) | Tier 2 | No native install. | User pastes `.hopper/prompts/*.md` content into Composer or Agent. Anchor and handoff protocol still works. |
+| Windsurf (Cascade) | Tier 2 | No native install. | Same paste workflow as Cursor. |
+| Aider | Tier 2 | No native install. | Paste prompts; `/use-role` handoffs are emitted by the model and re-pasted by the user. |
+| Continue.dev | Tier 2 | No native install. | Paste prompts; rely on Continue's own model routing. |
+| Generic web chat (Claude.ai, ChatGPT, Gemini, Kimi, GLM web) | Tier 3 | None. | User uploads relevant `.hopper/` files or pastes their content; copy/paste handoff blocks across browser tabs. |
+| Devin / autonomous agent platforms | Not supported | — | LLM-Hopper assumes human-driven session boundaries and copy/paste handoffs. |
+
+**Tier definitions**
+
+- **Tier 1**: native install, slash commands work, `/help` lists them.
+- **Tier 2**: prompts work via paste; protocol intact; no slash command.
+- **Tier 3**: prompts work but each session must be primed with the relevant repo files manually.
+
+A host downgrades to "Not supported" only when its execution model violates
+the prompt-only, file-anchored, human-controlled contract.
+
 ## Operational Risks
 
 Anchor: `TRD.md::operational-risks`
