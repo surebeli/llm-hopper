@@ -10,7 +10,7 @@
 - 自动 Handoff（完成任务后自动生成下一 block，只需复制粘贴）
 - FINAL SYNC & BACKFILL（自动更新全局状态，避免断头路）
 - Cost Tracking
-- Skill 包支持（一条命令使用）
+- Skill 包支持：原生 Claude Code skill + slash commands，原生 Codex CLI prompts，一键安装（详见 `.hopper/skill-package/README.md`）
 
 ## 项目结构
 

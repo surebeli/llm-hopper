@@ -9,3 +9,9 @@
 - Rewrote PRD and TRD into standard product and technical structures.
 - Reduced prompt surface to the two main workflow prompts plus cost prompts.
 - Replaced hard-coded model names with configurable role/model placeholders.
+- Repaired anchor drift in `.hopper/skill/` templates that pointed at the
+  removed `TRD.md::phase-mutation-rules` section; references now use
+  `TRD.md::data-and-state-files` and `TRD.md::role-contracts`.
+- Repackaged `.hopper/skill-package/` to ship native Claude Code skill +
+  slash commands and Codex CLI custom prompts with a real bash/PowerShell
+  installer (`--target`, `--scope`, `--dry-run`, `--uninstall`).
