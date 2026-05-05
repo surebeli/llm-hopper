@@ -9,14 +9,14 @@ Step 0: Role System Check
 - Read .hopper/MANIFEST.md
 - Output a short "Current roles loaded" summary (list all Nicknames)
 
-Step 1: gstack Strategy Phase (MUST use Leader)
-Use role: leader-opus-47
+Step 1: gstack Strategy Phase (MUST use configured Leader)
+Use role: [configured Leader nickname from .hopper/agents/AGENTS.md]
 - Run office-hours + CEO review + ENG review
 - Generate PROJECT.md, PRD.md, DECISIONS.md
 - After finish, automatically generate handoff block
 
-Step 2: GSD Planning Phase (MUST use Leader)
-Use role: leader-opus-47
+Step 2: GSD Planning Phase (MUST use configured Leader)
+Use role: [configured Leader nickname from .hopper/agents/AGENTS.md]
 - Generate TRD.md, ROADMAP.md, .planning/ structure
 - After finish, automatically generate handoff block
 
@@ -30,10 +30,10 @@ Step 3: Superpowers Execution Phase (TDD + Builder Review Reinforced)
   3. Confirm no scope creep (only allowed files were touched)
   4. Decide: GREEN-light → dispatch next task OR require fixes
 
-UI-related tasks MUST prefer ui-builder-gemini.
+UI-related tasks MUST prefer the configured UI-Builder nickname.
 
 Step 4: Review & Quality Convergence
-Use role: builder-kimi or leader-opus-47 for final review.
+Use a configured Builder or Leader nickname for final review.
 
 Cost Tracking:
 After every major phase or handoff, remind to run track-cost.md

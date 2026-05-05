@@ -19,9 +19,9 @@ You are now running inside LLM-Hopper Skill (prompt-only).
 /use-role <nickname> 
   → 切换到指定角色并自动生成下一 handoff（推荐日常使用）
   示例：
-  /use-role builder-kimi
-  /use-role ui-builder-gemini
-  /use-role executor-glm
+  /use-role builder-primary
+  /use-role ui-builder-primary
+  /use-role executor-primary
 
 /role-status
   → 显示当前所有角色状态、Nickname、Model

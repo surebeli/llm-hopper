@@ -38,7 +38,7 @@
 cat .hopper/prompts/start-new-project-with-roles.md
 ```
 
-复制 `BEGIN PROMPT`，粘贴到 Leader session（例如 `leader-opus-47`），即可自动开始带角色的完整 workflow。
+复制 `BEGIN PROMPT`，粘贴到配置好的 Leader session（例如 `.hopper/agents/AGENTS.md` 中的 `leader-primary`），即可自动开始带角色的完整 workflow。
 
 ### 2. 继续任意 handoff（主入口）
 
@@ -75,12 +75,12 @@ cat .hopper/prompts/cost-report.md
 
 | Nickname            | Role        | Model             | 权限说明                     |
 |---------------------|-------------|-------------------|------------------------------|
-| leader-opus-47      | Leader      | claude-opus-4-7   | gstack + GSD（决策规划）    |
-| builder-kimi        | Builder     | kimi-2.6          | Superpowers + Review        |
-| mimo                | Builder     | mimo-v2.5-pro     | Superpowers + Review        |
-| ui-builder-gemini   | UI-Builder  | gemini-3.1-pro    | Web/前端 UI（顶级设计感）  |
-| executor-glm        | Executor    | glm-5.1           | 纯执行                      |
-| executor-deepseek   | Executor    | deepseek-v4-flash | 纯执行                      |
+| leader-primary      | Leader      | `<leader-model>`             | gstack + GSD（决策规划）    |
+| builder-primary     | Builder     | `<builder-model>`            | Superpowers + Review        |
+| builder-secondary   | Builder     | `<builder-secondary-model>`  | Superpowers + Review        |
+| ui-builder-primary  | UI-Builder  | `<ui-builder-model>`         | Web/前端 UI（顶级设计感）  |
+| executor-primary    | Executor    | `<executor-model>`           | 纯执行                      |
+| executor-secondary  | Executor    | `<executor-secondary-model>` | 纯执行                      |
 
 ### 如何手动调整角色配置（推荐做法）
 
@@ -100,7 +100,7 @@ cat .hopper/prompts/cost-report.md
 
 ```markdown
 === HANDOFF TO ROLE ===
-Use role: ui-builder-gemini
+Use role: ui-builder-primary
 Completed phase: GSD
 Next phase: Superpowers (UI implementation)
 Prompt:
@@ -110,7 +110,7 @@ Prompt:
 日常常用的简写方式：
 
 ```text
-Use role: builder-kimi to execute the backend logic strictly following PLAN.md
+Use role: builder-primary to execute the backend logic strictly following PLAN.md
 ```
 
 ## Demo 演示

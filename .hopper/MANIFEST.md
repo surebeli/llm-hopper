@@ -6,7 +6,7 @@ Anchor: `.hopper/MANIFEST.md::phase-state`
 
 - Runtime identity: LLM-Hopper v0.2 (Phase 4 complete, Phase 5 pending)
 - Host environment: Codex CLI / Claude Code CLI (compatible)
-- Requested model profile: Builder (kimi-2.6) for disassembly + review; Executor (glm-5.1) for atomic task execution
+- Requested model profile: configured Builder for disassembly/review; configured Executor for atomic task execution
 - Execution mode: prompt-only handoff kit; Phase 5 validation build not started
 - Workspace: `F:\workspace\ai\llm-hopper`
 - Timestamp: `2026-05-05T00:00:00+08:00`
@@ -65,12 +65,12 @@ Primary identifier: **Nickname** (UUID is fallback).
 
 | Nickname | Role | Model | UUID | Activated |
 |----------|------|-------|------|-----------|
-| `leader-opus-47` | Leader | `claude-opus-4-7` | `2620cc7a-25e6-4059-999e-17af54bdcaf4` | 2026-05-03 |
-| `builder-kimi` | Builder | `kimi-2.6` | `6c5ac7fa-7a5e-40b4-920a-b4fe1d562876` | 2026-05-04 |
-| `executor-glm` | Executor | `glm-5.1` | `820cba1c-80de-45fc-a514-2f5de38fd804` | 2026-05-03 |
-| `ui-builder-gemini` | UI-Builder | `gemini-3.1-pro` | `bbf6602d-13c0-42d3-a1fc-59cbe7424b49` | 2026-05-03 |
-| `mimo` | Builder | `mimo-v2.5-pro` | `6db17b47-ba7f-4a16-8890-832ce18c43cb` | 2026-05-04 |
-| `executor-deepseek` | Executor | `deepseek-v4-flash` | `b35ea656-1833-40b0-81cd-99c3a533da1a` | 2026-05-04 |
+| `leader-primary` | Leader | `<leader-model>` | `2620cc7a-25e6-4059-999e-17af54bdcaf4` | 2026-05-03 |
+| `builder-primary` | Builder | `<builder-model>` | `6c5ac7fa-7a5e-40b4-920a-b4fe1d562876` | 2026-05-04 |
+| `executor-primary` | Executor | `<executor-model>` | `820cba1c-80de-45fc-a514-2f5de38fd804` | 2026-05-03 |
+| `ui-builder-primary` | UI-Builder | `<ui-builder-model>` | `bbf6602d-13c0-42d3-a1fc-59cbe7424b49` | 2026-05-03 |
+| `builder-secondary` | Builder | `<builder-secondary-model>` | `6db17b47-ba7f-4a16-8890-832ce18c43cb` | 2026-05-04 |
+| `executor-secondary` | Executor | `<executor-secondary-model>` | `b35ea656-1833-40b0-81cd-99c3a533da1a` | 2026-05-04 |
 
 - UI Direction: enabled (Builder only — UI-Leader / UI-Executor unassigned)
 - Agents file: `.hopper/agents/AGENTS.md`

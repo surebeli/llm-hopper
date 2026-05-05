@@ -6,7 +6,7 @@ Anchor: `DECISIONS.md::root`
 
 Anchor: `DECISIONS.md::gstack-summary`
 
-LLM-Hopper v0.1 will be built as a prompt-only, file-backed orchestration discipline for multi-model development. The first release will prove that cross-process context loss can be reduced through explicit artifacts, model routing rules, and handoff prompts. The repo is the shared memory. The model session is disposable.
+LLM-Hopper v0.2 is built as a prompt-only, file-backed orchestration discipline for multi-model development. The release proves that cross-process context loss can be reduced through explicit artifacts, role routing rules, and handoff prompts. The repo is the shared memory. The model session is disposable.
 
 ## Decision Log
 
@@ -19,7 +19,7 @@ Anchor: `DECISIONS.md::decision-log`
 | D-003 | Separate work into gstack, GSD, Superpowers, and Quality Convergence layers. | Different phases require different reasoning profiles, cost profiles, and review standards. | Accepted |
 | D-004 | End every phase with an exact handoff block. | The system must survive process boundaries and cold starts with minimal human interpretation. | Accepted |
 | D-005 | Route by capability role first and model name second. | Model availability and branding change; workflow roles should remain stable. | Accepted |
-| D-006 | Keep v0.1 zero-code and prompt-only. | The core risk is workflow validity, not implementation mechanics. Adding runtime code too early would blur the MVP. | Accepted |
+| D-006 | Keep the bootstrap zero-code and prompt-only. | The core risk is workflow validity, not implementation mechanics. Adding runtime code too early would blur the MVP. | Accepted |
 | D-007 | Require file anchors for durable context. | Anchors let future sessions cite precise requirements and decisions without relying on transcript memory. | Accepted |
 
 ## gstack Step 3: Engineering Review
@@ -28,7 +28,7 @@ Anchor: `DECISIONS.md::engineering-review`
 
 ### High-Level Architecture
 
-LLM-Hopper v0.1 has four conceptual components, all represented as files and prompts:
+LLM-Hopper v0.2 has four conceptual components, all represented as files and prompts:
 
 1. State layer: `.hopper/MANIFEST.md` records runtime identity, current phase, authoritative files, and next handoff.
 2. Strategy layer: `PROJECT.md`, `PRD.md`, and `DECISIONS.md` define vision, requirements, decisions, and model routing.
@@ -56,13 +56,13 @@ No session may depend on previous chat memory. If a fact matters, it must exist 
 
 Anchor: `DECISIONS.md::model-routing-table`
 
-| Workflow Layer | Primary Job | Recommended Model | Acceptable Equivalent | Reasoning / Cost Profile | Output Artifacts |
+| Workflow Layer | Primary Job | Recommended Role/Profile | Model Selection Rule | Reasoning / Cost Profile | Output Artifacts |
 | --- | --- | --- | --- | --- | --- |
-| gstack Decision Layer | Pressure-test product, define vision, set strategy, make architecture decisions. | GPT-5.5 xhigh | Opus 4.7 / Opus 4.6 equivalent | Highest available reasoning. Cost is justified because errors here cascade. | `PROJECT.md`, `PRD.md`, `DECISIONS.md` |
-| GSD / GSD-2 Context Layer | Refine requirements, decompose milestones, produce TRD and roadmap. | GPT-5.5 xhigh | Opus 4.7 / Opus 4.6 equivalent | Strong structured planning and ambiguity reduction. | `TRD.md`, `ROADMAP.md`, manifest update |
-| Superpowers Execution Layer | Execute bounded plans with TDD discipline and subagent-style task simulation. | Kimi 2.6 | DeepSeek V4 Pro Max / GLM 5.1 / Mimo V2 Pro | Coding-throughput model. Optimize cost and iteration speed under strong written constraints. | `.hopper/skill/`, prompt templates, demo artifacts |
-| Quality Convergence Layer | Review, polish, detect defects, align outputs to requirements. | GPT-5.4 xhigh | Opus Sonnet 4.6 | Strong review and synthesis. Lower cost than initial strategy while maintaining rigor. | Review notes, corrected artifacts, manifest update |
-| Emergency Arbitration | Resolve contradictions between strategy, TRD, roadmap, and execution. | GPT-5.5 xhigh | Opus 4.7 / Opus 4.6 equivalent | Escalate only when lower layers cannot decide safely. | `DECISIONS.md` update |
+| gstack Decision Layer | Pressure-test product, define vision, set strategy, make architecture decisions. | Leader | Choose the strongest configured reasoning model for high-blast-radius decisions. | Highest available reasoning. Cost is justified because errors here cascade. | `PROJECT.md`, `PRD.md`, `DECISIONS.md` |
+| GSD / GSD-2 Context Layer | Refine requirements, decompose milestones, produce TRD and roadmap. | Leader | Use the configured planning-capable Leader profile. | Strong structured planning and ambiguity reduction. | `TRD.md`, `ROADMAP.md`, manifest update |
+| Superpowers Execution Layer | Execute bounded plans with TDD discipline and subagent-style task simulation. | Builder / Executor | Use Builder for task design and review; use Executor for bounded implementation. | Optimize cost and iteration speed under strong written constraints. | `.hopper/skill/`, prompt templates, demo artifacts |
+| Quality Convergence Layer | Review, polish, detect defects, align outputs to requirements. | Builder or Leader | Use the strongest configured review-capable profile available. | Strong review and synthesis while preserving role boundaries. | Review notes, corrected artifacts, manifest update |
+| Emergency Arbitration | Resolve contradictions between strategy, TRD, roadmap, and execution. | Leader | Escalate to the configured highest-reasoning Leader profile. | Escalate only when lower layers cannot decide safely. | `DECISIONS.md` update |
 
 ## Model Routing Rules
 

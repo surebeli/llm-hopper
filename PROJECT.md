@@ -16,7 +16,7 @@ LLM-Hopper solves the coordination problem by making every model handoff explici
 
 ## Target User
 
-The first user is a developer or builder who already switches between Claude, GPT, Gemini, Kimi, DeepSeek, GLM, Mimo, or similar systems to control cost and quality. They are comfortable with Git and command-line workflows but do not want to write custom orchestration code, maintain API keys, or trust hidden agent state.
+The first user is a developer or builder who already switches between multiple model services to control cost and quality. They are comfortable with Git and command-line workflows but do not want to write custom orchestration code, maintain API keys, or trust hidden agent state.
 
 ## MVP Promise
 

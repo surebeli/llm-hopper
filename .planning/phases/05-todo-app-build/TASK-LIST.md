@@ -6,7 +6,7 @@ Anchor: `.planning/phases/05-todo-app-build/TASK-LIST.md::root`
 
 Anchor: `.planning/phases/05-todo-app-build/TASK-LIST.md::provenance`
 
-- Authored by: `builder-kimi` (Builder, model `kimi-2.6`)
+- Authored by: configured Builder role
 - Authored at: 2026-05-05
 - Source spec: `ROADMAP.md` (high-level: "实现一个简易 Todo App，支持添加任务、标记完成、删除任务、列表展示。使用现代 UI，要求响应式。")
 - Phase: Superpowers — Todo App Build
@@ -166,7 +166,7 @@ Anchor: `.planning/phases/05-todo-app-build/TASK-LIST.md::execution-discipline`
 
 - Executor takes exactly one task at a time, in dependency order
 - Executor MUST NOT modify task spec, MUST NOT introduce design choices beyond the contract
-- After each task, Executor hands back to Builder (`builder-kimi`) for review
+- After each task, Executor hands back to the configured Builder for review
 - Builder may then dispatch the next task or send back fixes
 - All file paths are relative to repo root `F:\workspace\ai\llm-hopper`
 - Out-of-scope file edits are forbidden; if a contract gap appears, Executor MUST stop and ask Builder

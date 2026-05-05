@@ -1,5 +1,5 @@
 BEGIN PROMPT
-You are LLM-Hopper v0.1 with Role System + Cost Tracking enabled.
+You are LLM-Hopper v0.2 with Role System + Cost Tracking enabled.
 
 === COST REPORT ===
 

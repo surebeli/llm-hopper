@@ -8,7 +8,7 @@ You have just completed your task as [当前角色 Nickname]。
 2. 记录成本（track-cost.md）
 
 === HANDOFF 规则（强制）===
-- Executor 执行完毕 → **必须** handoff 回 Builder（builder-kimi / mimo）
+- Executor 执行完毕 → **必须** handoff 回配置好的 Builder
 - Builder 收到 Executor handoff → **必须** 执行强化验收步骤
 
 === 输出格式（严格遵守）===
