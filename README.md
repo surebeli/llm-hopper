@@ -1,4 +1,4 @@
-# LLM-Hopper v0.1
+# LLM-Hopper v0.2
 
 **prompt-only、zero-code 的多角色跨进程 AI 开发框架**
 
@@ -187,4 +187,4 @@ strategy -> planning -> execution -> review
 
 复制本 README 中需要的 prompt 文件命令，在项目根目录执行后，将对应内容粘贴到目标模型 session。
 
-LLM-Hopper v0.1 已就绪。你现在拥有了一个真正的 prompt-only 多角色 AI 开发团队。
+LLM-Hopper v0.2 已就绪。你现在拥有了一个真正的 prompt-only 多角色 AI 开发团队。

@@ -6,7 +6,7 @@ Anchor: `ROADMAP.md::root`
 
 Anchor: `ROADMAP.md::overview`
 
-LLM-Hopper v0.1 ships as a prompt-only multi-model handoff kit. The milestone path starts with a manifest, locks product strategy, adds the GSD technical planning layer, creates Superpowers-style execution templates and a Todo demo, then finishes with quality convergence.
+LLM-Hopper v0.2 ships as a prompt-only multi-model handoff kit. The milestone path starts with a manifest, locks product strategy, adds the GSD technical planning layer, creates Superpowers-style execution templates and a Todo demo, then finishes with quality convergence.
 
 ## Milestones
 
@@ -116,7 +116,7 @@ Anchor: `ROADMAP.md::m03-superpowers-execution`
 
 Anchor: `ROADMAP.md::m04-quality-convergence`
 
-**Goal:** Review, polish, and verify the v0.1 artifact set against the PRD and decisions.
+**Goal:** Review, polish, and verify the v0.2 artifact set against the PRD and decisions.
 
 **Depends on:** Phase 3.
 
@@ -128,7 +128,7 @@ Anchor: `ROADMAP.md::m04-quality-convergence`
 2. The artifact set is internally consistent and recoverable from files alone.
 3. No artifact violates the prompt-only, zero-code bootstrap constraint.
 4. Review findings are resolved or explicitly logged.
-5. The final manifest declares v0.1 ready for use.
+5. The final manifest declares v0.2 ready for use.
 
 **Plans:**
 
@@ -172,7 +172,7 @@ Anchor: `ROADMAP.md::risks`
 | Model names age quickly. | All phases | Route by role first, named model second. |
 | Execution model invents product policy. | Phase 3 | Require anchors from `PROJECT.md`, `PRD.md`, `TRD.md`, `ROADMAP.md`, and `DECISIONS.md`. |
 | Review phase is skipped. | Phase 4 | Manifest must route Phase 3 output into quality convergence. |
-| Future automation breaks prompt-only trust. | Future versions | Keep v0.1 automation-free; log automation as deferred. |
+| Future automation breaks prompt-only trust. | Future versions | Keep v0.2 automation-free; log automation as deferred. |
 
 ## Progress
 
