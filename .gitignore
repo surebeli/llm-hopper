@@ -1,1 +1,27 @@
-.claude
+# Local agent installs (project-scope skill landing zone)
+.claude/
+.codex/
+.cursor/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Logs and temp
+*.log
+*.bak
+*.tmp
+
+# Local secrets / env
+.env
+.env.local
+.env.*.local
