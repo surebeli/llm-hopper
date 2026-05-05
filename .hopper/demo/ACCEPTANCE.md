@@ -6,87 +6,63 @@ Anchor: `.hopper/demo/ACCEPTANCE.md::root`
 
 Anchor: `.hopper/demo/ACCEPTANCE.md::purpose`
 
-This file lists the acceptance criteria for each step in `.hopper/demo/TODO-APP.md`. Each step is owned by a different model session. A step is accepted only when every criterion in its block is satisfied. Failures route back to the responsible phase per `DECISIONS.md::model-routing-rules`.
+This file defines acceptance for the v0.2 Todo App role workflow. The demo is accepted only when the role order, TDD task format, file boundaries, and reinforced Builder review are all followed.
 
-## Global Acceptance Criteria
+## Global Criteria
 
 Anchor: `.hopper/demo/ACCEPTANCE.md::global`
 
-These apply to every step in the demo:
+- [ ] Every session reads `.hopper/roles/ROLES.md` and `.hopper/agents/AGENTS.md` before selecting a role.
+- [ ] Role selection is by nickname and role, not by hard-coded model name.
+- [ ] Every handoff uses `.hopper/prompts/handoff-to-role.md` schema.
+- [ ] Each step lists exact authoritative files.
+- [ ] No step relies on prior chat history.
+- [ ] The helper script only prints text and does not mutate files.
 
-- [ ] The session was opened with a model from the recommended role in `DECISIONS.md::model-routing-table` or an acceptable equivalent.
-- [ ] The session read only the files listed by the step prompt before writing.
-- [ ] The session wrote only the artifact named in the step prompt.
-- [ ] The session preserved every existing anchor in the files it touched.
-- [ ] The session ended with the exact handoff block from `TRD.md::handoff-block-schema`.
-- [ ] The session did not install packages, call APIs, run daemons, or generate runtime code.
+## Step 1 - Leader Kickoff
 
-If any global criterion fails, the step is not accepted. The user must restart the step or route to the upstream phase.
+Anchor: `.hopper/demo/ACCEPTANCE.md::step-1-kickoff`
 
-## Step 1 - Strategy Acceptance
+- [ ] The Leader confirms Phase 5 is pending before work starts.
+- [ ] The Leader defines the Todo App validation scope without implementing app files.
+- [ ] The Leader handoff targets a configured Builder or UI-Builder nickname.
+- [ ] The handoff names PRD.md, TRD.md, ROADMAP.md, `.hopper/MANIFEST.md`, and `.planning/STATE.md` as authoritative context.
 
-Anchor: `.hopper/demo/ACCEPTANCE.md::step-1-strategy`
+## Step 2 - Builder Disassembly
 
-The strategy step produces `demo/PRODUCT.md`.
+Anchor: `.hopper/demo/ACCEPTANCE.md::step-2-disassemble`
 
-- [ ] `demo/PRODUCT.md` contains a section anchored as `demo/PRODUCT.md::vision`.
-- [ ] `demo/PRODUCT.md` contains a section anchored as `demo/PRODUCT.md::scope`.
-- [ ] `demo/PRODUCT.md` contains a section anchored as `demo/PRODUCT.md::success-definition`.
-- [ ] The product description names exactly the three features: add a todo, mark a todo as complete, list todos with an active/completed filter.
-- [ ] The recommended model routing references `DECISIONS.md::model-routing-table`.
-- [ ] The handoff block names Phase 2 (or the planning step) as next.
-- [ ] No runtime code, schema, or executable file is created.
+- [ ] `.planning/phases/05-todo-app-build/TASK-LIST.md` is created or refreshed.
+- [ ] The task list contains exactly five tasks: T01 through T05.
+- [ ] Each task has files allowed, forbidden changes, RED, GREEN, REFACTOR, and acceptance criteria.
+- [ ] T01 is the only task dispatched to Executor after disassembly.
+- [ ] The Builder does not mark T01 complete before receiving Executor evidence.
 
-## Step 2 - Planning Acceptance
+## Step 3 - Executor Execution
 
-Anchor: `.hopper/demo/ACCEPTANCE.md::step-2-planning`
+Anchor: `.hopper/demo/ACCEPTANCE.md::step-3-execute`
 
-The planning step produces `demo/PLAN.md`.
+- [ ] The Executor reads only the assigned task section and required role files.
+- [ ] The Executor touches only files listed in the task's allowed scope.
+- [ ] The Executor records RED -> GREEN -> REFACTOR evidence in its handoff.
+- [ ] The Executor does not edit PRD.md, TRD.md, ROADMAP.md, `.planning/STATE.md`, or `.hopper/MANIFEST.md`.
+- [ ] The Executor hands back to Builder instead of dispatching another task.
 
-- [ ] `demo/PLAN.md` contains an anchor of the form `demo/PLAN.md::milestones`.
-- [ ] `demo/PLAN.md` defines exactly three milestones aligned to the three features in `demo/PRODUCT.md`.
-- [ ] Every milestone lists goal, dependencies, requirements, success criteria, and acceptance.
-- [ ] `demo/PLAN.md` references `TRD.md::router-protocol` or `TRD.md::handoff-block-schema` as the routing source.
-- [ ] No milestone introduces a feature absent from `demo/PRODUCT.md`.
-- [ ] The handoff block names the execution step as next.
-- [ ] No runtime code, package install, API call, or daemon is described as a setup requirement.
+## Step 4 - Builder Review
 
-## Step 3 - Execution Acceptance
+Anchor: `.hopper/demo/ACCEPTANCE.md::step-4-builder-review`
 
-Anchor: `.hopper/demo/ACCEPTANCE.md::step-3-execution`
-
-The execution step produces `demo/EXECUTION.md`.
-
-- [ ] `demo/EXECUTION.md` contains an anchor of the form `demo/EXECUTION.md::milestone-prompts`.
-- [ ] Each milestone in `demo/PLAN.md` has a matching bounded prompt block in `demo/EXECUTION.md`.
-- [ ] Each prompt block lists required inputs, files allowed to modify, stop conditions, output format, and a handoff block.
-- [ ] No prompt asks for package installs, API calls, daemons, or generated runtime code.
-- [ ] Every prompt cites at least one file by anchor.
-- [ ] The handoff block names the review step as next.
-- [ ] The session does not modify `demo/PRODUCT.md` or `demo/PLAN.md`.
-
-## Step 4 - Review Acceptance
-
-Anchor: `.hopper/demo/ACCEPTANCE.md::step-4-review`
-
-The review step produces `demo/REVIEW.md`.
-
-- [ ] `demo/REVIEW.md` contains an anchor of the form `demo/REVIEW.md::checklist-results`.
-- [ ] Every item in `.hopper/demo/REVIEW-CHECKLIST.md` is recorded with one of `pass`, `fix-applied`, `defer`, or `escalate`.
-- [ ] Each `fix-applied` lists the file changed and the rationale.
-- [ ] Each `escalate` names the responsible upstream phase per `DECISIONS.md::model-routing-rules`.
-- [ ] No new product requirement, architecture decision, or roadmap milestone is introduced.
-- [ ] The final handoff block declares the demo complete (`Next phase: Demo complete`) or names the gating fix.
+- [ ] The Builder verifies each GREEN acceptance criterion.
+- [ ] The Builder verifies file-scope compliance.
+- [ ] The Builder marks the task as GREEN-light or needs-fix.
+- [ ] GREEN-light dispatches the next task; needs-fix routes back to the same Executor.
+- [ ] The Builder records review status in the task list before dispatching more work.
 
 ## Cross-Step Trace
 
 Anchor: `.hopper/demo/ACCEPTANCE.md::cross-step-trace`
 
-After all four steps run, the user must be able to:
-
-- [ ] Trace each milestone from `demo/PLAN.md` back to a feature in `demo/PRODUCT.md`.
-- [ ] Trace each execution prompt in `demo/EXECUTION.md` back to a milestone in `demo/PLAN.md`.
-- [ ] Trace each review finding in `demo/REVIEW.md` back to the file it cites.
-- [ ] Open `.hopper/MANIFEST.md` and find no unresolved references to the demo session that owns the next step.
-
-If any trace fails, the demo did not satisfy `TRD.md::todo-demo-contract` and the user re-runs the failing step from a fresh session.
+- [ ] Every Executor task traces back to the Todo App scope in `.hopper/demo/TODO-APP.md`.
+- [ ] Every task has a single owning role at a time.
+- [ ] Every state update is attributable to a Leader or Builder final sync.
+- [ ] Phase 5 is not considered complete until all five tasks pass Builder review.

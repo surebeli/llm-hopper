@@ -1,4 +1,4 @@
-# Todo App Demo: Cross-Model Workflow Walkthrough
+# Todo App Demo: v0.2 Role + TDD Workflow
 
 Anchor: `.hopper/demo/TODO-APP.md::root`
 
@@ -6,185 +6,197 @@ Anchor: `.hopper/demo/TODO-APP.md::root`
 
 Anchor: `.hopper/demo/TODO-APP.md::purpose`
 
-The Todo App demo is an artifact-only walkthrough that shows how LLM-Hopper coordinates strategy, planning, execution, and review across independent model sessions. It does not generate a runnable application. Instead, it produces a sequence of markdown artifacts under `.hopper/demo/`-style ownership rules so the user can practice the cross-process handoff exactly as defined by `TRD.md::todo-demo-contract`.
+This demo shows the LLM-Hopper v0.2 path for a Todo App validation build. It uses the configured roles from `.hopper/roles/ROLES.md` and `.hopper/agents/AGENTS.md`, then moves work through automatic handoff blocks.
 
-A successful run of this demo proves that a user can close a model session, open a new one with the recommended model, paste the handoff prompt, and continue without hidden chat context.
+The helper script is read-only: it prints prompts and file paths. The prompted sessions may create the Phase 5 planning file and `apps/todo/` implementation files when the user chooses to run the validation build.
 
 ## Demo Scope
 
 Anchor: `.hopper/demo/TODO-APP.md::demo-scope`
 
-The hypothetical product is a single-user Todo app with three features:
+The validation app is a single-user Todo app with five expected capabilities:
 
 1. Add a todo with a title.
-2. Mark a todo as complete.
-3. List todos with a filter for active or completed.
+2. Mark a todo complete or active.
+3. Delete a todo.
+4. List active, completed, and all todos.
+5. Persist todos in browser localStorage.
 
-The demo asks four model sessions to produce a strategy, a plan, an execution kit, and a review for this product. Each session writes only its phase's bounded artifacts. No runtime code is generated.
+## Role Sequence
 
-## Artifact Set
+Anchor: `.hopper/demo/TODO-APP.md::role-sequence`
 
-Anchor: `.hopper/demo/TODO-APP.md::artifact-set`
+| Step | Command | Owning Role | Output |
+| --- | --- | --- | --- |
+| 1 | `kickoff` | Leader | Product frame and Phase 5 handoff |
+| 2 | `disassemble` | Builder or UI-Builder | `.planning/phases/05-todo-app-build/TASK-LIST.md` |
+| 3 | `execute` | Executor | One scoped task under `apps/todo/` |
+| 4 | `builder-review` | Builder | Reinforced review result and next handoff |
 
-The demo references three companion files:
+Role nicknames are loaded from `.hopper/agents/AGENTS.md`; model choices remain configurable.
 
-- `TODO-APP.md` (this file): scenario, recommended model sequence, and step-by-step prompts.
-- `ACCEPTANCE.md`: acceptance criteria for every handoff step.
-- `REVIEW-CHECKLIST.md`: quality convergence checklist applied at the end.
+## Step 1 - Leader Kickoff
 
-The pure bash helper `start-todo-demo.sh` prints the file list and the next prompt for any selected step. It does not install packages, call APIs, or generate code.
+Anchor: `.hopper/demo/TODO-APP.md::step-1-kickoff`
 
-## Model-Session Sequence
-
-Anchor: `.hopper/demo/TODO-APP.md::model-session-sequence`
-
-| Step | Phase | Recommended Role | Recommended Model | Artifact Produced |
-| --- | --- | --- | --- | --- |
-| 1 | Strategy | Strategy | GPT-5.5 xhigh, or Opus 4.7 equivalent | `demo/PRODUCT.md` (notional path used only as a session output reference) |
-| 2 | Planning | Planning | GPT-5.5 xhigh, or Opus 4.7 equivalent | `demo/PLAN.md` (notional path used only as a session output reference) |
-| 3 | Execution | Execution | Kimi 2.6, or DeepSeek V4 Pro Max equivalent | `demo/EXECUTION.md` (notional path used only as a session output reference) |
-| 4 | Review | Review | GPT-5.4 xhigh, or Opus Sonnet 4.6 equivalent | `demo/REVIEW.md` (notional path used only as a session output reference) |
-
-The `demo/*.md` paths in the table are illustrative: the demo can be run inside a throwaway directory or scratchpad. The point is the cross-session protocol, not the storage location.
-
-## Step 1 - Strategy Session
-
-Anchor: `.hopper/demo/TODO-APP.md::step-1-strategy`
-
-### Setup
-
-- Open a new Codex CLI session with a strategy-class model.
-- Have `.hopper/demo/TODO-APP.md`, `.hopper/demo/ACCEPTANCE.md`, and the LLM-Hopper top-level files available in the working directory.
-
-### Copyable Prompt
+Use a Leader role to confirm the product frame and route Phase 5 into Builder disassembly.
 
 ```text
 BEGIN PROMPT
-LLM-Hopper Todo Demo: act as the strategy session for a hypothetical single-user Todo app with three features (add, complete, list with active/completed filter). Read .hopper/MANIFEST.md, PROJECT.md, PRD.md, DECISIONS.md, .hopper/demo/TODO-APP.md, and .hopper/demo/ACCEPTANCE.md.
+You are running LLM-Hopper v0.2 as the Leader role.
 
-Goal: Produce a one-page Todo app product brief named demo/PRODUCT.md that mirrors the PROJECT.md structure: vision, problem, scope, success definition, and a minimal model routing recommendation. Use stable anchors of the form Anchor: `demo/PRODUCT.md::section`. End with the handoff block per TRD.md::handoff-block-schema pointing at the planning step.
+Read:
+- .hopper/MANIFEST.md
+- .hopper/roles/ROLES.md
+- .hopper/agents/AGENTS.md
+- PRD.md
+- TRD.md
+- ROADMAP.md
+- .hopper/demo/TODO-APP.md
+- .hopper/demo/ACCEPTANCE.md
+
+Goal:
+Confirm the Phase 5 Todo App validation scope and emit a HANDOFF TO ROLE block for Builder disassembly.
 
 Constraints:
-- Prompt-only, zero-code. Do not generate runtime code.
-- Modify only demo/PRODUCT.md during this session.
-- Stop and ask the user if any product question is ambiguous.
+- Do not implement app files.
+- Do not mark Phase 5 execution as started.
+- Keep model selection role-first and configurable.
+
+Handoff target:
+Use the configured Builder or UI-Builder nickname from .hopper/agents/AGENTS.md.
 END PROMPT
 ```
 
-### Expected Outcome
+## Step 2 - Builder Task Disassembly
 
-The session writes a single `demo/PRODUCT.md` file with anchored sections. It ends with a handoff block pointing the user to step 2.
+Anchor: `.hopper/demo/TODO-APP.md::step-2-disassemble`
 
-## Step 2 - Planning Session
-
-Anchor: `.hopper/demo/TODO-APP.md::step-2-planning`
-
-### Setup
-
-- Close the strategy session.
-- Open a new Codex CLI session with a planning-class model.
-- Make `demo/PRODUCT.md` available alongside the LLM-Hopper top-level files.
-
-### Copyable Prompt
+Use a Builder or UI-Builder role to create the Executor-grade task list.
 
 ```text
 BEGIN PROMPT
-LLM-Hopper Todo Demo: act as the planning session. Read .hopper/MANIFEST.md, demo/PRODUCT.md, TRD.md, ROADMAP.md, .hopper/demo/TODO-APP.md, and .hopper/demo/ACCEPTANCE.md.
+You are running LLM-Hopper v0.2 as a Builder role.
 
-Goal: Produce demo/PLAN.md with a TRD-style routing summary, a roadmap of three milestones (Add, Complete, List), and acceptance criteria per milestone. Use stable anchors. End with the handoff block per TRD.md::handoff-block-schema pointing at the execution step.
+Read:
+- .hopper/MANIFEST.md
+- .hopper/roles/ROLES.md
+- .hopper/agents/AGENTS.md
+- PRD.md
+- TRD.md
+- ROADMAP.md
+- .hopper/prompts/handoff-to-role.md
+- .hopper/demo/TODO-APP.md
+- .hopper/demo/ACCEPTANCE.md
 
-Constraints:
-- Prompt-only, zero-code. Do not generate runtime code.
-- Modify only demo/PLAN.md during this session.
-- Do not change demo/PRODUCT.md. If the product brief is ambiguous, stop and route to a strategy session.
+Goal:
+Create .planning/phases/05-todo-app-build/TASK-LIST.md with five atomic tasks for apps/todo/.
+
+Each task must include:
+- Task id and title.
+- Files allowed to touch.
+- Forbidden changes.
+- RED condition.
+- GREEN acceptance criteria.
+- REFACTOR allowance.
+- Exact Executor handoff block.
+
+Required task sequence:
+T01 Project skeleton and semantic HTML.
+T02 Responsive CSS and visual states.
+T03 Todo store and localStorage.
+T04 DOM rendering and events.
+T05 Accessibility, empty states, and polish.
+
+After writing the task list, emit a HANDOFF TO ROLE block for the configured Executor role with T01 only.
 END PROMPT
 ```
 
-### Expected Outcome
+## Step 3 - Executor Task Execution
 
-The session writes `demo/PLAN.md` with three milestones and acceptance criteria. It ends with a handoff block pointing to step 3.
+Anchor: `.hopper/demo/TODO-APP.md::step-3-execute`
 
-## Step 3 - Execution Session
-
-Anchor: `.hopper/demo/TODO-APP.md::step-3-execution`
-
-### Setup
-
-- Close the planning session.
-- Open a new Codex CLI session with an execution-class model.
-- Make `demo/PRODUCT.md` and `demo/PLAN.md` available alongside the LLM-Hopper top-level files.
-
-### Copyable Prompt
+Use an Executor role to complete exactly one task from the Builder task list.
 
 ```text
 BEGIN PROMPT
-LLM-Hopper Todo Demo: act as the execution session. Read .hopper/MANIFEST.md, demo/PRODUCT.md, demo/PLAN.md, TRD.md, ROADMAP.md, .hopper/demo/TODO-APP.md, and .hopper/demo/ACCEPTANCE.md.
+You are running LLM-Hopper v0.2 as an Executor role.
 
-Goal: Produce demo/EXECUTION.md that documents the bounded prompts an implementer would run for each milestone in demo/PLAN.md. Each milestone gets: required inputs, files allowed to modify, stop conditions, expected output schema, and a handoff block. Do not generate runtime code; this demo proves the workflow, not the app.
+Read:
+- .hopper/roles/ROLES.md
+- .hopper/agents/AGENTS.md
+- .planning/phases/05-todo-app-build/TASK-LIST.md
+- The specific task section named in the handoff block
 
-Constraints:
-- Prompt-only, zero-code. Do not install packages, call APIs, or run daemons.
-- Modify only demo/EXECUTION.md during this session.
-- Do not change demo/PRODUCT.md or demo/PLAN.md. If a milestone is ambiguous, stop and route to a planning session per DECISIONS.md::model-routing-rules rule 4.
+Goal:
+Execute only the assigned task. Touch only files listed in "Files allowed to touch".
+
+Required behavior:
+- Follow RED -> GREEN -> REFACTOR.
+- Do not choose architecture beyond the task spec.
+- Do not edit ROADMAP.md, .planning/STATE.md, .hopper/MANIFEST.md, PRD.md, or TRD.md.
+- If the task is ambiguous, stop and hand back to Builder.
+
+At completion:
+Emit a HANDOFF TO ROLE block back to the configured Builder role with verification evidence.
 END PROMPT
 ```
 
-### Expected Outcome
+## Step 4 - Builder Reinforced Review
 
-The session writes `demo/EXECUTION.md` with one bounded prompt per milestone. It ends with a handoff block pointing to step 4.
+Anchor: `.hopper/demo/TODO-APP.md::step-4-builder-review`
 
-## Step 4 - Review Session
-
-Anchor: `.hopper/demo/TODO-APP.md::step-4-review`
-
-### Setup
-
-- Close the execution session.
-- Open a new Codex CLI session with a review-class model.
-- Make `demo/PRODUCT.md`, `demo/PLAN.md`, and `demo/EXECUTION.md` available alongside the LLM-Hopper top-level files.
-
-### Copyable Prompt
+Use a Builder role to verify the Executor result before any next task starts.
 
 ```text
 BEGIN PROMPT
-LLM-Hopper Todo Demo: act as the review session. Read .hopper/MANIFEST.md, demo/PRODUCT.md, demo/PLAN.md, demo/EXECUTION.md, .hopper/demo/TODO-APP.md, .hopper/demo/ACCEPTANCE.md, and .hopper/demo/REVIEW-CHECKLIST.md.
+You are running LLM-Hopper v0.2 as a Builder role receiving an Executor handoff.
 
-Goal: Produce demo/REVIEW.md that records the result of each item in REVIEW-CHECKLIST.md against the three earlier demo artifacts. Apply only consistency, anchor, or polish fixes inline; defer or escalate substantive changes back to strategy or planning. End with the handoff block per TRD.md::handoff-block-schema declaring the demo complete or naming the gating fix.
+Read:
+- .hopper/prompts/handoff-to-role.md
+- .planning/phases/05-todo-app-build/TASK-LIST.md
+- The files touched by the Executor
+- .hopper/demo/REVIEW-CHECKLIST.md
 
-Constraints:
-- Prompt-only, zero-code. Do not generate runtime code.
-- Modify only demo/REVIEW.md during this session, plus minor consistency or anchor fixes in the earlier demo files when the change is justified in writing.
-- Do not introduce new product requirements or planning milestones.
+Goal:
+Run the Builder Reinforced Review Checklist for the completed task.
+
+Required checks:
+1. Verify RED -> GREEN -> REFACTOR evidence.
+2. Verify every GREEN acceptance criterion.
+3. Verify the Executor touched only allowed files.
+4. Verify no product, roadmap, manifest, or role policy was changed.
+5. Decide GREEN-light or needs-fix.
+
+If GREEN-light:
+- Mark the task review result in TASK-LIST.md.
+- Emit the next Executor handoff.
+
+If needs-fix:
+- Emit a fix handoff to the same Executor with exact failing criteria.
 END PROMPT
 ```
 
-### Expected Outcome
+## Helper Usage
 
-The session writes `demo/REVIEW.md`. It either declares the demo complete or names the gating fix and the responsible upstream phase.
-
-## How To Run The Helper
-
-Anchor: `.hopper/demo/TODO-APP.md::run-helper`
-
-The helper script `.hopper/demo/start-todo-demo.sh` is a pure bash printer. It does not install software, call APIs, generate code, or start daemons.
+Anchor: `.hopper/demo/TODO-APP.md::helper-usage`
 
 ```bash
-./.hopper/demo/start-todo-demo.sh           # prints intro and step list
-./.hopper/demo/start-todo-demo.sh strategy  # prints step 1 setup, files, and prompt
-./.hopper/demo/start-todo-demo.sh planning  # prints step 2 setup, files, and prompt
-./.hopper/demo/start-todo-demo.sh execution # prints step 3 setup, files, and prompt
-./.hopper/demo/start-todo-demo.sh review    # prints step 4 setup, files, and prompt
+./.hopper/demo/start-todo-demo.sh
+./.hopper/demo/start-todo-demo.sh kickoff
+./.hopper/demo/start-todo-demo.sh disassemble
+./.hopper/demo/start-todo-demo.sh execute
+./.hopper/demo/start-todo-demo.sh builder-review
 ```
 
-The user opens the recommended model session, copies the prompt, runs the step, then re-runs the helper for the next step.
-
-## Demo Success Definition
+## Success Definition
 
 Anchor: `.hopper/demo/TODO-APP.md::success-definition`
 
 The demo is successful when:
 
-1. Each step is run in a separate model session matched to the recommended role.
-2. Each step ends with the exact handoff block from `TRD.md::handoff-block-schema`.
-3. No step relies on chat history, API access, package installs, daemons, or generated runtime code.
-4. The review step closes with a pass against every item in `REVIEW-CHECKLIST.md` or names the responsible upstream phase to fix.
+1. The role sequence uses Leader -> Builder/UI-Builder -> Executor -> Builder.
+2. Builder creates a TDD task list before Executor work begins.
+3. Executor completes only one scoped task at a time.
+4. Builder reviews each Executor result before the next task is dispatched.
+5. State files are updated only during explicit final sync, not by Executor task work.

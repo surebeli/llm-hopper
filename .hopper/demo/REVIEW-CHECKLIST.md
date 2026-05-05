@@ -6,75 +6,56 @@ Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::root`
 
 Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::purpose`
 
-This checklist is used by the review step in `.hopper/demo/TODO-APP.md`. The reviewing model walks through every item against the three earlier demo artifacts (`demo/PRODUCT.md`, `demo/PLAN.md`, `demo/EXECUTION.md`) and records the result in `demo/REVIEW.md`. The checklist mirrors `TRD.md::verification-contract` and `DECISIONS.md::architecture-constraints`, scoped to the demo.
+This checklist is used by the Builder after each Executor handoff in the v0.2 Todo App validation workflow.
 
 Each item is recorded as one of:
 
-- `pass`: criterion satisfied, no change.
-- `fix-applied`: a small consistency, anchor, or polish fix was applied; record the file and the rationale.
-- `defer`: criterion not satisfied but a fix is deferred to a future review pass; record the reason.
-- `escalate`: criterion not satisfied because of a substantive product, architecture, or planning change; route to the responsible upstream phase per `DECISIONS.md::model-routing-rules`.
+- `pass`: criterion satisfied.
+- `fix-required`: Executor must repair the task.
+- `builder-fix`: Builder applied a limited task-list or handoff correction.
+- `escalate`: Leader must resolve a product or architecture ambiguity.
 
-## Anchor Coverage
+## Role Boundary
 
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::anchor-coverage`
+Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::role-boundary`
 
-- [ ] `demo/PRODUCT.md` includes anchors for vision, scope, and success definition.
-- [ ] `demo/PLAN.md` includes anchors for milestones and per-milestone acceptance.
-- [ ] `demo/EXECUTION.md` includes anchors for milestone prompts and a final handoff block.
-- [ ] No new file lacks at least one stable anchor.
+- [ ] Executor touched only files allowed by the assigned task.
+- [ ] Executor did not edit product, roadmap, manifest, role, or planning policy files.
+- [ ] Executor did not dispatch the next task.
+- [ ] Builder owns the review decision.
 
-## Cross-Artifact Consistency
+## TDD Evidence
 
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::cross-artifact-consistency`
+Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::tdd-evidence`
 
-- [ ] Every milestone in `demo/PLAN.md` traces to exactly one feature in `demo/PRODUCT.md`.
-- [ ] Every prompt block in `demo/EXECUTION.md` traces to exactly one milestone in `demo/PLAN.md`.
-- [ ] No artifact contradicts the model routing roles in `DECISIONS.md::model-routing-table`.
-- [ ] No artifact references a file or anchor that does not exist.
+- [ ] RED state is named clearly.
+- [ ] GREEN evidence maps to each acceptance criterion.
+- [ ] REFACTOR changes stay inside the task's allowed scope.
+- [ ] Verification commands or manual checks are recorded in the handoff.
 
-## Prompt-Only Compliance
+## Acceptance Coverage
 
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::prompt-only-compliance`
+Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::acceptance-coverage`
 
-- [ ] No artifact instructs a package install.
-- [ ] No artifact instructs an API call or remote service registration.
-- [ ] No artifact instructs starting a daemon, worker, or scheduler.
-- [ ] No artifact requires a binary, generated executable, or browser extension.
-- [ ] No artifact assumes the user has API keys.
-- [ ] The bash helper `start-todo-demo.sh` only prints text; it does not perform any of the above.
+- [ ] Every GREEN criterion from the task list is checked.
+- [ ] Any failed criterion has an exact fix handoff.
+- [ ] Any ambiguity is escalated to Leader instead of guessed.
+- [ ] No extra product feature is accepted as part of the task.
 
-## Handoff Schema
+## Handoff Quality
 
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::handoff-schema`
+Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::handoff-quality`
 
-- [ ] Every demo step ends with a handoff block matching `TRD.md::handoff-block-schema`.
-- [ ] Each handoff block names: completed phase, next phase, recommended model profile, authoritative files, and an exact prompt.
-- [ ] No handoff block references chat history.
-- [ ] The final review handoff either declares the demo complete or names the responsible upstream phase.
+- [ ] The handoff names completed phase, next phase, authoritative files, and prompt.
+- [ ] The handoff is minimal enough for a fresh session.
+- [ ] The handoff names exactly one next owning role.
+- [ ] Cost tracking is requested after major phase or handoff completion.
 
-## Boundary Enforcement
+## Release Gate
 
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::boundary-enforcement`
+Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::release-gate`
 
-- [ ] The strategy step modified only `demo/PRODUCT.md`.
-- [ ] The planning step modified only `demo/PLAN.md`.
-- [ ] The execution step modified only `demo/EXECUTION.md`.
-- [ ] The review step modified only `demo/REVIEW.md`, plus any small consistency or anchor fixes recorded explicitly.
-- [ ] No step modified `.hopper/skill/`, `.hopper/prompts/`, `.hopper/demo/` (other files), or top-level LLM-Hopper artifacts.
-
-## Recoverability
-
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::recoverability`
-
-- [ ] A new reader can reconstruct the full demo flow from the four `demo/*.md` files plus `.hopper/demo/TODO-APP.md` without reading any chat transcript.
-- [ ] Each artifact names every file it depends on.
-- [ ] The bash helper still prints the correct file list and prompt for each step.
-
-## Release Decision
-
-Anchor: `.hopper/demo/REVIEW-CHECKLIST.md::release-decision`
-
-- [ ] If every checklist item is `pass` or `fix-applied`, record the demo as `complete` in `demo/REVIEW.md` and emit the final handoff with `Next phase: Demo complete`.
-- [ ] If any item is `defer`, record the reason and the future trigger in `demo/REVIEW.md`. The demo may still be marked `complete-with-deferrals`.
-- [ ] If any item is `escalate`, record the responsible upstream phase. Do not declare the demo complete. The handoff block names the escalation target.
+- [ ] Phase 5 remains pending until all five tasks pass Builder review.
+- [ ] Phase 5 complete requires updating `.planning/STATE.md`, ROADMAP.md, and `.hopper/MANIFEST.md`.
+- [ ] The final app supports add, complete, delete, list filters, and localStorage persistence.
+- [ ] The final review records any known deferrals before declaring completion.
