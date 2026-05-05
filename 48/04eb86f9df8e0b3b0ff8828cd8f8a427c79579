@@ -1,0 +1,18 @@
+TRD.md
+  h_7f04b48fd0b771 1-28
+PRD.md
+  h_7f04b48fd0b771 1-32
+ARCHITECTURE.md
+  h_7f04b48fd0b771 1-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "4804eb86f9df8e0b3b0ff8828cd8f8a427c79579",
+  "prompts": {},
+  "humans": {
+    "h_7f04b48fd0b771": {
+      "author": "litianyi"
+    }
+  }
+}
