@@ -2,10 +2,15 @@
 
 ## v0.3-unreleased
 
+- **PING protocol schema v3** (2026-05-06): added Step 7.5 (mandatory
+  `.hopper/handoffs/<task-id>-output.md` artifact) + Leader Review Protocol
+  (`review <task-id>` / `review` / `review --pending`). Closes the
+  Worker → Leader feedback loop that previously required manual
+  copy-paste from the worker's CLI.
+- Added `.hopper/templates/builder-output.md` — structured output template
+  for Builder / Builder-UI / Executor roles (Step 7.5 artifact).
 - Added `.hopper/PING.md` — ping protocol schema v2 (atomic commit step
-  enforced; 10-step lifecycle: confirm role → read queue → find next →
-  lock → read detail → execute → sanity check → mark done → cost log →
-  commit → report). Sourced from myWriteAssistant dogfood validation.
+  enforced; 10-step lifecycle). Sourced from myWriteAssistant dogfood.
 - Added `.hopper/templates/queue.md` — generic queue board template.
 - Added `.hopper/templates/bootstrap-CLAUDE.md`, `bootstrap-GEMINI.md`,
   `bootstrap-AGENTS.md` — per-CLI auto-load entries that point at
