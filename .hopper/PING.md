@@ -348,3 +348,7 @@ Leader pushes by editing `.hopper/queue.md` directly: add a row, set `Status: pe
 | **v4** | **2026-05-07** | **Added Step 0.5 (refresh shared state) + Step 6 acceptance scope-qualify + Concurrency notes expansion. Mitigations for F5 (queue concurrent-write) and P7 (WIP leakage) discovered in myWriteAssistant dogfood.** |
 
 If queue.md format or protocol ever changes incompatibly, future versions will document the migration here.
+
+## Origin
+
+This protocol was first designed and validated in the myWriteAssistant dogfood (2026-05-06 → ongoing). Each schema bump (v2 / v3 / v4) corresponds to a real protocol gap discovered during multi-LLM coordination of an 18-task v0.2 vendor-agnostic refactor. See `HOPPER-FEEDBACK.md::F1/F4/F5/P7` in the dogfood project for trigger contexts.
