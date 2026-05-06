@@ -2,6 +2,16 @@
 
 ## v0.3-unreleased
 
+- **PING protocol schema v4** (2026-05-07): added **Step 0.5 (refresh
+  shared state)** to force fresh re-read of `.hopper/queue.md` and other
+  shared files before each ping cycle, plus **Step 6 acceptance
+  scope-qualify** restricting tsc/lint checks to task-touched files
+  (full-repo checks too easily polluted by sibling sessions' WIP).
+  Concurrency notes expanded with WIP-file-leakage mitigations and
+  worktree advice. Mitigations for F5 (queue concurrent-write) and P7
+  (WIP leakage) found in myWriteAssistant dogfood; both bugs were
+  caught by Critic batch review (HOPPER-FEEDBACK O7) — single Leader
+  review missed them.
 - **PING protocol schema v3** (2026-05-06): added Step 7.5 (mandatory
   `.hopper/handoffs/<task-id>-output.md` artifact) + Leader Review Protocol
   (`review <task-id>` / `review` / `review --pending`). Closes the
