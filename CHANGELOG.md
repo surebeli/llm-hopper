@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3-unreleased
+
+- Added `.hopper/PING.md` — ping protocol schema v2 (atomic commit step
+  enforced; 10-step lifecycle: confirm role → read queue → find next →
+  lock → read detail → execute → sanity check → mark done → cost log →
+  commit → report). Sourced from myWriteAssistant dogfood validation.
+- Added `.hopper/templates/queue.md` — generic queue board template.
+- Added `.hopper/templates/bootstrap-CLAUDE.md`, `bootstrap-GEMINI.md`,
+  `bootstrap-AGENTS.md` — per-CLI auto-load entries that point at
+  `.hopper/PING.md`. Each is a stand-alone file at target project's repo
+  root (note: root `AGENTS.md` ≠ `.hopper/AGENTS.md`).
+- README updated to document ping protocol and new templates dir.
+
 ## v0.2.1 - 2026-05-05
 
 - Removed heredoc wrappers from PRD, TRD, prompt, skill, and installer artifacts.
