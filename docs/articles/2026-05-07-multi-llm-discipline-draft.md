@@ -5,7 +5,9 @@
 
 ## What I learned shipping a 13-task multi-LLM dogfood in 2 days
 
-I gave Claude Opus a spec. A fresh GPT-5.5 session reviewed it as adversarial Critic and found 12 ship-blocking issues. I rewrote the spec; another fresh GPT-5.5 session reviewed v1 and found 11 *different* issues. Then I shipped to a Builder. After all that review, live smoke against the real upstream provider found two more bugs that neither mocks nor any reviewer had caught.
+I configured my API key, hit "send" on a "hello" message, and the chat panel broke. Twice in a row. Status 200, response body empty. Every mock test had passed. Two adversarial Critic sessions had just signed off on the spec. I had given the Builder's commit a strong-accept review minutes earlier.
+
+The first bug: the AI SDK was routing my request to OpenAI's new `/responses` endpoint, but the backend I'd configured (Doubao, OpenAI-compatible) only supports `/chat/completions`. The second, after I fixed the first: the route was emitting plain text streams while the client expected the SDK's data-stream protocol with `0:"text"\n` chunks. Neither bug was visible in any mock test or static review. They were only visible to a real "hello".
 
 This is what coordinating multiple LLMs across roles actually feels like in 2026.
 
@@ -15,11 +17,11 @@ Two days ago I started dogfooding a coordination protocol called `llm-hopper` on
 - **7 roles, 6 LLMs/CLIs**: Claude Opus / Claude Code / GPT-5.5 Codex / Gemini 3.1 Pro / Kimi 2.6 / DeepSeek-V4-Flash
 - **~$2.20 total cost** across all roles
 - **4 protocol schema bumps** (v1 → v5), each tied to a real bug the protocol failed to anticipate
-- **All 5 Critic findings closed**, including 2 production-only bugs that mocks + Critic + Leader review *all* missed; only live smoke against real upstream caught them
+- **All 5 Critic findings closed**, including 2 production-only bugs (the two above) that mocks + Critic + Leader review *all* missed; only live smoke against real upstream caught them
 
-Every claim below is grounded in public git history (`surebeli/llm-hopper` + `surebeli/myWriteAssistant`); commit hashes throughout.
+The fixes for those two bugs are at commits `2cd6232` and the diff inside it on `feat/hopper-dogfood` of `surebeli/myWriteAssistant`. Selected paths and cost rows below; full HOPPER-FEEDBACK.md log is in `.hopper/HOPPER-FEEDBACK.md` of that branch.
 
-The counterintuitive lesson: **multi-LLM coordination isn't a framework problem. It's a discipline problem.** Most existing harnesses (OMC, OMO, OpenCode-based plugins) try to solve it by writing more code. The interesting move is to write less code and impose more discipline — at least until you understand what discipline you actually need.
+The thesis: **multi-LLM coordination isn't a framework problem. It's a discipline problem.** Plugin harnesses like OMC and OMO optimize deeply for one CLI host; I wanted a lowest-common-denominator protocol that survives across hosts. The bet is that less code plus more discipline beats more code plus host-specific abstractions — at least until you understand what discipline you actually need.
 
 ---
 
@@ -90,28 +92,30 @@ These aren't anecdotes — they're the spine of what 2 days of dogfood produced.
 2. `STABLE_PROVIDER_IDS` includes "openai" but no OpenAI adapter exists or is queued. The 5-stable smoke gate would never pass. I wrote the spec saying 5 providers but only queued 4 adapter tasks.
 3. The error sanitizer regex covers `Bearer ...` and `api_key=...` but not bare `sk-...` or natural-language forms like `"Incorrect API key provided: sk-secret-token"`. AC9 (key absent from error responses) had a real production leak path.
 
-I had read these files. I'd reviewed each task. I'd given strong-accept verdicts. As the spec author, I had confirmation bias — I trusted what I'd written. A fresh reviewer with no spec-writing memory caught it in 10 minutes for $0.65.
+I had read these files. I'd reviewed each task. I'd given strong-accept verdicts. As the spec author, I had confirmation bias — I trusted what I'd written. A fresh reviewer with no spec-writing memory caught it in 10 minutes for $0.65 (T15 row in `.hopper/COST-LOG.md`).
 
 **Live smoke caught what every static review missed.** This is the deepest finding. T02 implementation passed mock tests, AC1 grep, AC2 integration tests, AC16 capability dispatch tests. Critic batch reviewed it and found new issues but not adapter routing. Leader strong-accepted T02-rework after the fix. Then we did manual verification: configure Doubao, send "hello", see if Chat panel works. The test failed. Twice. Once because @ai-sdk/openai 5.x defaults to OpenAI's new `/responses` endpoint, which Doubao doesn't support — the Doubao adapter needed `provider.chat()` to force `/chat/completions` routing. Then once more because the route returned `result.toTextStreamResponse()` (plain text) but the client expected Vercel AI SDK's data stream protocol (`0:"text"\n` chunks). Two production-only bugs, neither catchable by mock tests no matter how thorough.
 
 ### What this means
 
-A reasonable inference from these data points:
+A reasonable inference from these data points (within this dogfood, not as a universal claim):
 
-- **Each LLM and each role sees a different cone.** Researcher reads contracts; Coder reads imports; Critic looks for structural gaps; Live smoke catches wire-level mismatches.
-- **Adversarial framing matters.** The Critic prompt explicitly asks "find what's wrong"; the Leader review prompt asks "is this acceptable?" Different framings produce different sensitivity.
+- **Each role sees a different cone.** Researcher reads contracts; Coder reads imports; Critic looks for structural gaps; Live smoke catches wire-level mismatches.
+- **Adversarial framing matters.** The Critic prompt explicitly asks "find what's wrong"; the Leader review prompt asks "is this acceptable?" Different framings produce different sensitivity to different bug classes.
 - **Fresh sessions matter.** Critic v0 and v1 were the same model in different sessions; they found different issues partly because v1 didn't carry v0's mental model of "what's already been checked."
 - **Mock tests have hard limits.** They verify what you encoded; they can't verify what you didn't think to encode. Live integration is non-negotiable for adapter-touching code.
 
-This is the discipline argument: coordinating 4-7 LLMs across roles isn't redundant. The protocol routes work to layers that catch different bug classes, and the cumulative coverage exceeds what any single layer can produce. Single-LLM coordination, even with multiple sessions of the same model, can't replicate the layering benefit.
+This is the discipline argument: in this project, coordinating 4-7 LLMs across roles wasn't redundant. The protocol routed work to layers that caught different bug classes, and the cumulative coverage exceeded what each layer found alone. Whether multi-fresh-sessions of one model could replicate this with the same prompt-shape variation is an open question I haven't tested. What I did test is whether one Opus session reviewing its own spec catches everything; it didn't.
 
 ---
 
-## Cost reality: the 200x differential is real
+## Cost reality: cheap tiers are viable for bounded work
 
-DeepSeek-V4-Flash did a single-file README expansion with technically accurate content, valid markdown, and zero protocol violations. Cost: **~$0.001 in tokens**. The same dogfood routed equivalently shaped doc work to GPT-5.5 Codex elsewhere; that cost **~$0.20-0.30 per task**. The quality differential on the actual output was not visible to me reading both. The cost differential is **200x**.
+DeepSeek-V4-Flash did a single-file README expansion (commit `9bd88f7`): technically accurate content, valid markdown, zero protocol violations. Cost: **~$0.001 in tokens**. Within this dogfood, GPT-5.5 Codex doing complex Builder tasks (multi-file refactors with tests) cost **~$0.20-0.85 per task**. On comparable bounded work — the kind of doc/comment/sweep tasks I deliberately routed to the cheaper tier — the observed cost differential ran **roughly 100-200x**.
 
-I'd assumed multi-LLM routing would save 30-50% on token costs. The actual numbers from 13 tasks in 2 days:
+This is not a universal quality claim. It's an observed routing spread within one project's bounded low-risk work. But within that scope, the spread is dramatic enough to change how I think about per-task model selection.
+
+The actual numbers from 13 tasks in 2 days (full table; commit hashes are searchable on `feat/hopper-dogfood`):
 
 | Task | Role | LLM | Tokens (k in / k out) | Cost |
 |------|------|-----|----------------------|------|
@@ -171,18 +175,18 @@ Three follow-up essays planned, in order of conviction:
 2. *Live smoke against real upstream is non-negotiable for adapter code* — about the production-only bugs caught by manual verify in T02-rework. Mock tests pass things they shouldn't.
 3. *Why your AI workflow is one policy change away from breaking* — vendor-agnostic from the policy-risk angle. Less technical, more strategic.
 
-The protocol itself is at v5. v0.3 release of llm-hopper goes out when I have the energy to write the README in English.
+The protocol itself is at v5. v0.3 release of llm-hopper is waiting on the English README.
 
 The whole setup cost me $2.20 in API tokens to produce this evidence. Every commit is timestamped, signed, and public.
 
-**If your team is also coordinating multi-LLM workflows by hand**, the protocol takes about 10 minutes to install: three markdown files in `github.com/surebeli/llm-hopper/.hopper/templates/`. MIT licensed. No daemon, no port, no host platform lock-in. It works in any LLM CLI — I've validated it across Claude Code, Codex CLI, Gemini CLI, Kimi (web), and DeepSeek (web).
+**If your team is also coordinating multi-LLM workflows by hand**: copy `github.com/surebeli/llm-hopper/.hopper/templates/` into a repo, drop one bootstrap file at the repo root for your CLI of choice, type `ping` in any LLM session. Three markdown files. MIT licensed. No daemon, no port. Validated across Claude Code, Codex CLI, Gemini CLI, Kimi (web), and DeepSeek (web).
 
-**If you want to argue with the discipline thesis**, the evidence to challenge it is at `github.com/surebeli/myWriteAssistant`, branch `feat/hopper-dogfood`. The full HOPPER-FEEDBACK.md log — 5 applied protocol patches, 9 proposed improvements, 12 essay-quality observations — is in `.hopper/HOPPER-FEEDBACK.md` of that branch. I'll engage with the strongest counterargument and either rewrite or update the protocol.
+**If you want to argue with the discipline thesis**: the evidence is at `github.com/surebeli/myWriteAssistant`, branch `feat/hopper-dogfood`, file `.hopper/HOPPER-FEEDBACK.md`. Drop a counterexample in this HN thread or open an issue titled `discipline-thesis-counterexample` on the llm-hopper repo. I'll engage with the strongest one and either rewrite the section or update the protocol.
 
-**If you're collecting case studies of multi-LLM coordination in production**, I want to compare notes. Layered discovery generated all the findings here, but I have one project's worth of evidence. The pattern's strength is exactly the kind of thing that generalizes or doesn't, and I'd rather find out which from your data than convince myself from mine.
+**If you're collecting case studies of multi-LLM coordination in production**: open a GitHub issue on `surebeli/llm-hopper` titled `case-study:<your-project>` with whatever shape of evidence you have. Layered discovery generated the findings here, but I have one project's worth of evidence and I'd rather find out where the pattern fails from your data than convince myself from mine.
 
 ---
 
 *Author: surebeli (litianyi). May 2026.*
 
-*This essay was drafted using llm-hopper itself: outline by Leader (Claude Opus 4.7), competing perspectives by Critic (GPT-5.5 fresh session), final pass by Drafter (also Claude). Cost: another ~$0.40 across the writing roles. Yes, that's in COST-LOG.md too.*
+*Drafting note: outline by Leader (Claude Opus 4.7), adversarial review by Critic (GPT-5.5 fresh session), final pass by Drafter (also Claude). Writing-role cost ~$0.40, logged in COST-LOG.md.*
