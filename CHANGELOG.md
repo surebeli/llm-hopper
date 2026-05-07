@@ -2,6 +2,23 @@
 
 ## v0.3-unreleased
 
+- **PING protocol schema v5** (2026-05-07): eliminates ~80% of out-of-band
+  Leader→Worker prose dispatch observed during T02-rework cycle. Four
+  changes:
+  - Step 0.5 also re-reads `.hopper/PING.md` (not just `queue.md`) —
+    fixes "schema bumped, please re-read" prose
+  - `ping <task-id>` / `ping --task=<id>` form for task-level override —
+    replaces "do X next not lex default Y" prose (P4 promoted to A-class)
+  - Leader Feedback Channel via `.hopper/handoffs/<task-id>-leader-feedback.md`
+    file — replaces manual-verify diagnosis-via-chat with structured
+    file-based audit trail
+  - queue.md gets optional `Priority` column (`high`/`normal`/`low`);
+    Step 2 sort by priority desc then lex
+  Mitigations for HOPPER-FEEDBACK O8/O9/O10/P4/P9 from myWriteAssistant
+  dogfood T02-rework 3-round manual verify cycle. The cycle exposed real
+  production bugs (Doubao /responses endpoint mismatch + AI SDK 6.x
+  toDataStreamResponse missing) that mock tests + Critic + Leader review
+  all missed; live smoke against real upstream caught them.
 - **PING protocol schema v4** (2026-05-07): added **Step 0.5 (refresh
   shared state)** to force fresh re-read of `.hopper/queue.md` and other
   shared files before each ping cycle, plus **Step 6 acceptance
