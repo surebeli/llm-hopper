@@ -1,23 +1,25 @@
 # Multi-LLM coordination as a discipline, not a framework
 
-> **Status**: Draft v0 — first draft from dogfood evidence. Will polish before HN submission.
+> **Status**: Draft v1 — polish pass applied; awaiting external feedback before HN submission.
 > **Date**: 2026-05-07
-> **Word count**: ~2900
 
 ## What I learned shipping a 13-task multi-LLM dogfood in 2 days
 
-Two days ago I started dogfooding a coordination protocol called `llm-hopper` on a real product (a writing assistant called myWriteAssistant). The numbers as of this morning:
+I gave Claude Opus a spec. A fresh GPT-5.5 session reviewed it as adversarial Critic and found 12 ship-blocking issues. I rewrote the spec; another fresh GPT-5.5 session reviewed v1 and found 11 *different* issues. Then I shipped to a Builder. After all that review, live smoke against the real upstream provider found two more bugs that neither mocks nor any reviewer had caught.
+
+This is what coordinating multiple LLMs across roles actually feels like in 2026.
+
+Two days ago I started dogfooding a coordination protocol called `llm-hopper` on a real product. The summary numbers if you want to skip ahead:
 
 - **13 tasks shipped** through the protocol's full lifecycle
-- **7 LLM roles** (Researcher, Leader, Critic, Builder, Builder-UI, two Executors)
-- **6 different LLMs / CLIs** (Claude Opus, Claude Code, GPT-5.5 Codex, Gemini 3.1 Pro, Kimi 2.6, DeepSeek-V4-Flash)
+- **7 roles, 6 LLMs/CLIs**: Claude Opus / Claude Code / GPT-5.5 Codex / Gemini 3.1 Pro / Kimi 2.6 / DeepSeek-V4-Flash
 - **~$2.20 total cost** across all roles
 - **4 protocol schema bumps** (v1 → v5), each tied to a real bug the protocol failed to anticipate
-- **All 5 Critic-batch findings closed**, including 2 production-only bugs that mock tests + Critic batch + Leader review *all* missed and only live smoke against real upstream caught
+- **All 5 Critic findings closed**, including 2 production-only bugs that mocks + Critic + Leader review *all* missed; only live smoke against real upstream caught them
 
-This isn't a thought piece. The git history is public on `surebeli/llm-hopper` and `surebeli/myWriteAssistant`; every claim below is grounded in a commit hash you can read.
+Every claim below is grounded in public git history (`surebeli/llm-hopper` + `surebeli/myWriteAssistant`); commit hashes throughout.
 
-What I want to share is the counterintuitive lesson dogfood produced: **multi-LLM coordination isn't a framework problem. It's a discipline problem.** Most existing harnesses (OMC, OMO, OpenCode) try to solve it by writing more code. The interesting move is to write less code and impose more discipline — at least until you understand what discipline you actually need.
+The counterintuitive lesson: **multi-LLM coordination isn't a framework problem. It's a discipline problem.** Most existing harnesses (OMC, OMO, OpenCode-based plugins) try to solve it by writing more code. The interesting move is to write less code and impose more discipline — at least until you understand what discipline you actually need.
 
 ---
 
@@ -107,9 +109,9 @@ This is the discipline argument: coordinating 4-7 LLMs across roles isn't redund
 
 ## Cost reality: the 200x differential is real
 
-I'd assumed multi-LLM routing would save 30-50% on token costs. The dogfood numbers are more dramatic.
+DeepSeek-V4-Flash did a single-file README expansion with technically accurate content, valid markdown, and zero protocol violations. Cost: **~$0.001 in tokens**. The same dogfood routed equivalently shaped doc work to GPT-5.5 Codex elsewhere; that cost **~$0.20-0.30 per task**. The quality differential on the actual output was not visible to me reading both. The cost differential is **200x**.
 
-Per-task cost across the 13 done tasks (token in/out, approximate USD):
+I'd assumed multi-LLM routing would save 30-50% on token costs. The actual numbers from 13 tasks in 2 days:
 
 | Task | Role | LLM | Tokens (k in / k out) | Cost |
 |------|------|-----|----------------------|------|
@@ -171,12 +173,16 @@ Three follow-up essays planned, in order of conviction:
 
 The protocol itself is at v5. v0.3 release of llm-hopper goes out when I have the energy to write the README in English.
 
-If any of this resonates, the dogfood case study is at `github.com/surebeli/myWriteAssistant`, branch `feat/hopper-dogfood`. The full HOPPER-FEEDBACK.md log of 5 applied protocol patches, 9 proposed improvements, and 12 essay-quality observations is in `.hopper/HOPPER-FEEDBACK.md` of that branch. The `llm-hopper` protocol itself is at `github.com/surebeli/llm-hopper`.
+The whole setup cost me $2.20 in API tokens to produce this evidence. Every commit is timestamped, signed, and public.
 
-The whole setup cost me $2.20 in API tokens to get to this essay. Every commit is timestamped, signed, and public. If you find a flaw in the discipline argument, the evidence to challenge it is in the same repo.
+**If your team is also coordinating multi-LLM workflows by hand**, the protocol takes about 10 minutes to install: three markdown files in `github.com/surebeli/llm-hopper/.hopper/templates/`. MIT licensed. No daemon, no port, no host platform lock-in. It works in any LLM CLI — I've validated it across Claude Code, Codex CLI, Gemini CLI, Kimi (web), and DeepSeek (web).
+
+**If you want to argue with the discipline thesis**, the evidence to challenge it is at `github.com/surebeli/myWriteAssistant`, branch `feat/hopper-dogfood`. The full HOPPER-FEEDBACK.md log — 5 applied protocol patches, 9 proposed improvements, 12 essay-quality observations — is in `.hopper/HOPPER-FEEDBACK.md` of that branch. I'll engage with the strongest counterargument and either rewrite or update the protocol.
+
+**If you're collecting case studies of multi-LLM coordination in production**, I want to compare notes. Layered discovery generated all the findings here, but I have one project's worth of evidence. The pattern's strength is exactly the kind of thing that generalizes or doesn't, and I'd rather find out which from your data than convince myself from mine.
 
 ---
 
 *Author: surebeli (litianyi). May 2026.*
 
-*This essay was written using llm-hopper itself: outline drafted by Leader (Claude Opus 4.7), competing perspectives proposed by Critic (GPT-5.5 fresh session), final pass by Drafter (also Claude). Cost: another ~$0.40 across the writing roles. Yes, that's also in the COST-LOG.md.*
+*This essay was drafted using llm-hopper itself: outline by Leader (Claude Opus 4.7), competing perspectives by Critic (GPT-5.5 fresh session), final pass by Drafter (also Claude). Cost: another ~$0.40 across the writing roles. Yes, that's in COST-LOG.md too.*
