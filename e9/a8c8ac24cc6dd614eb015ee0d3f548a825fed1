@@ -1,0 +1,19 @@
+docs/articles/2026-05-07-multi-llm-discipline-draft.md
+  s_d314ccd8ad8e10::t_7689850781e3f0 1-182
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "e9a8c8ac24cc6dd614eb015ee0d3f548a825fed1",
+  "prompts": {},
+  "sessions": {
+    "s_d314ccd8ad8e10": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "950fe3e5-0fa8-493d-bfb7-1c5aeb45f933",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
