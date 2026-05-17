@@ -146,6 +146,39 @@ There is **no `pong` keyword**. The semantic equivalent is the `pending` → `in
 
 **If you want explicit ack**: the convention is for Worker to commit Step 3 (lock) as its own commit (`[<task-id>] start`) before doing Step 5 work. This makes the start visible in `git log` without protocol change. Not standardized; project-by-project choice.
 
+### 3.3 Dispatcher Empathy + Uniform Quality, Scaled Content *(2026-05-18 principle)*
+
+Protocol-level rule for handoff quality:
+
+> **If I myself were the recipient with zero prior context, could I execute and know when done — without pinging the dispatcher back?**
+
+Content scales by role gradient (Strategy → Leader → Builder → Builder-pair, analogous to CEO → CTO → engineer). **Quality standard is uniform across all gradient levels**: same required sections, same machine-checkability bar, just scaled granularity.
+
+**Five-question dispatcher self-check** — answer YES to all before sending any handoff:
+
+1. If I were the recipient with zero context, could I start?
+2. Can I know when done without pinging dispatcher back?
+3. Can I distinguish "in-scope deviation" from "must-escalate blocker"?
+4. Do I know output shape, location, and verdict format?
+5. Do I know current MANIFEST cursor so my Next recommendation stays in scope?
+
+**Dispatch Template family** at `.hopper/templates/dispatch-*.md`:
+
+| Template | Recipient role | Scope | Typical size |
+|---|---|---|---|
+| `dispatch-strategy-to-leader.md` | Leader | Multi-task phase, authority transfer, escalation contract | 200-700 lines |
+| `dispatch-leader-to-builder.md` | Builder/Builder-UI/Executor | Single task spec with TDD acceptance | 80-200 lines |
+| `dispatch-leader-to-pair.md` | Builder-pair (sidecar) | Polish review with **explicit mode declaration** | 40-100 lines |
+| `dispatch-builder-to-pair.md` | Builder-pair (embedded) | Sidecar prompt inside substantive output.md | 30-80 lines |
+
+Each template enforces the same section shape; recipient role determines content depth.
+
+**Why this matters (origin story)**: P0 double-rework retro 2026-05-17 found both reworks (T-CLIENT-RUNTIME-polish + T-COSTLOG-REORG) were **dispatcher empathy failures**, not executor failures. The handoffs under-specified closure criteria. Stronger model wouldn't fix it; better handoff template would. See `myWriteAssistant/.hopper/handoffs/leader-retro-2026-05-17-double-rework.md`.
+
+**Not retroactively applied**: active handoffs are NOT modified to fit new templates. Preserves audit trail. New dispatches use templates going forward.
+
+**Relationship to PING v3 output schema**: This is the INPUT-side complement. PING v3's `<task-id>-output.md` schema tightens what comes BACK from executor; this principle tightens what goes OUT to executor. Together = closed loop: clear input → clear output → easy review → less rework.
+
 ---
 
 ## 4. Keyword reference (verbatim from PING.md)
@@ -266,6 +299,10 @@ All paths relative to project root. The `.hopper/handoffs/` directory is the pri
 | `.hopper/handoffs/<task-id>-polish-output.md` | Builder-pair | Leader | Sidecar polish verdict *(convention)* |
 | `.hopper/handoffs/leader-tasklist.md` | Leader (only) | All | Immutable task spec (queue.md = cursor on this) |
 | `.hopper/handoffs/leader-status-<date>-<event>.md` | Leader | Strategy | Periodic digest *(convention)* |
+| `.hopper/templates/dispatch-strategy-to-leader.md` | (template) | Strategy → Leader dispatchers | Multi-task phase handoff template |
+| `.hopper/templates/dispatch-leader-to-builder.md` | (template) | Leader → Builder dispatchers | Single task spec template |
+| `.hopper/templates/dispatch-leader-to-pair.md` | (template) | Leader → Builder-pair dispatchers | Sidecar with explicit mode declaration |
+| `.hopper/templates/dispatch-builder-to-pair.md` | (template) | Builder → Builder-pair dispatchers | Embedded sidecar prompt template |
 
 **Naming rules**:
 

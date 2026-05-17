@@ -2,6 +2,17 @@
 
 ## v0.3-unreleased
 
+- **Dispatch Template family** (2026-05-18): 4 templates at
+  `.hopper/templates/dispatch-*.md` for Strategy→Leader / Leader→Builder /
+  Leader→Pair (sidecar) / Builder→Pair (embedded sidecar prompt). Each
+  enforces the Dispatcher Empathy principle (uniform quality bar, content
+  scaled by role gradient). USAGE-GUIDE.md §3.3 documents the principle
+  and the 5-question dispatcher self-check. Templates are scaffolding,
+  not PING.md primitives — PING.md unchanged (freeze v5 through
+  2026-11-15). Origin: P0 double-rework retro 2026-05-17 in
+  myWriteAssistant dogfood — both reworks were dispatcher empathy
+  failures, not executor failures. INPUT-side complement to PING v3
+  output artifact schema (which is OUTPUT-side closure).
 - **USAGE-GUIDE.md** (2026-05-17): comprehensive companion to PING.md v5
   documenting all inter-role communication patterns (PING protocol
   primitives, scattered conventions, dogfood-emergent patterns). Includes
