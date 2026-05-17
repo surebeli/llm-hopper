@@ -16,6 +16,7 @@ Model values are local configuration placeholders. Replace them with the model I
 | `ui-builder-primary` | `bbf6602d-13c0-42d3-a1fc-59cbe7424b49` | UI-Builder | `<ui-builder-model>` | Builder permissions, scoped to UI direction (Web/frontend, components, CSS, React/Vue) |
 | `builder-secondary` | `6db17b47-ba7f-4a16-8890-832ce18c43cb` | Builder | `<builder-secondary-model>` | Superpowers + Review; full design + execution from Leader spec |
 | `executor-secondary` | `b35ea656-1833-40b0-81cd-99c3a533da1a` | Executor | `<executor-secondary-model>` | Superpowers execution only; strict instruction-follow, no design, no plan changes |
+| `strategy-primary` | `825ab5bf-84c6-484b-b144-3e5e37595054` | Strategy | `<strategy-model>` | Observer/supervisor above Leader; file-protocol communication via `strategy-*.md` push and `leader-ping-strategy-*.md` consumption; no queue push, no code edits, no task pop |
 
 ## Nickname is the Primary Identifier
 
@@ -28,6 +29,7 @@ Model values are local configuration placeholders. Replace them with the model I
 - **Builder** — Receives Leader spec; owns design + execution; may run review.
 - **Executor** — Pure execution. No design, no scope drift, no plan edits.
 - **UI-Builder** — Builder behavior scoped to UI direction. Output targets modern, accessible, visually consistent web frontends.
+- **Strategy** *(optional layer)* — Observer/supervisor above Leader. Long-horizon decisions, escalation handling, protocol-evolution judgment. File-protocol communication only (`strategy-*.md` push, `leader-ping-strategy-*.md` consumption); no queue push, no code edits, no task pop. See `.hopper/USAGE-GUIDE.md` §2.1 + §4.3.
 
 ## Reassignment
 

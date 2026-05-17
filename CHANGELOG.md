@@ -2,6 +2,20 @@
 
 ## v0.3-unreleased
 
+- **USAGE-GUIDE.md** (2026-05-17): comprehensive companion to PING.md v5
+  documenting all inter-role communication patterns (PING protocol
+  primitives, scattered conventions, dogfood-emergent patterns). Includes
+  role catalog, primitive matrix, filename master table, ASCII lifecycle
+  diagrams, 7 common-scenario recipes, and known-gap list (deferred to
+  v0.6 per protocol freeze through 2026-11-15). Source: completeness
+  audit during myWriteAssistant Round 2 dogfood.
+- **Strategy role formalized in `roles/ROLES.md` and `agents/AGENTS.md`**
+  (2026-05-17): documents the dogfood-emergent observer/supervisor layer
+  above Leader. Communicates via `strategy-<dated>-<purpose>.md` push and
+  consumes `leader-ping-strategy-<dated>.md` escalations. Marked optional
+  layer; small projects can omit. PING.md unchanged (frozen v5);
+  `MANIFEST.md` role-to-agent table refresh deferred to v0.6 unification
+  pass.
 - **PING protocol schema v5** (2026-05-07): eliminates ~80% of out-of-band
   Leader→Worker prose dispatch observed during T02-rework cycle. Four
   changes:
